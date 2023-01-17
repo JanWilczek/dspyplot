@@ -99,3 +99,43 @@ def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, sampling_rate=
     ax.spines['bottom'].set_visible(False)
 
     save_spectrum(output_path)
+
+
+def plot_spectrum_db_and_save(magnitude_spectrum, output_path: Path, sampling_rate=None):
+    plt.figure(figsize=(12, 6))
+    if sampling_rate:
+        frequencies = dft_frequencies(2 * magnitude_spectrum.shape[0] - 1, sampling_rate)
+        plt.plot(frequencies, magnitude_spectrum, style.color)
+        plt.xlim([0, frequencies[-1]])
+    else:
+        plt.plot(magnitude_spectrum, style.color)
+        plt.xlim([0, magnitude_spectrum.shape[0]])
+    plt.ylim([-60, 0])
+    plt.grid()
+    plt.xlabel('frequency [Hz]')
+    plt.ylabel('magnitude [dBFS]')
+    ax = plt.gca()
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    save_spectrum(output_path)
+
+
+def plot_spectrum_db_in_octaves_and_save(magnitude_spectrum, output_path: Path, sampling_rate):
+    plt.figure(figsize=(12, 6))
+    min_x = 29
+    frequencies = dft_frequencies(2 * magnitude_spectrum.shape[0] - 1, sampling_rate)
+    plt.semilogx(frequencies, magnitude_spectrum, style.color)
+    plt.ylim([-60, 0])
+    xticks = [31.25, 62.5, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
+    xtick_labels = ['31.25', '62.5', '125', '250', '500', '1k', '2k', '4k', '8k', '16k']
+    plt.xticks(xticks, xtick_labels)
+    plt.xlim([min_x, frequencies[-1]])
+    plt.grid()
+    plt.xlabel('frequency [Hz]')
+    plt.ylabel('magnitude [dBFS]')
+    ax = plt.gca()
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    save_spectrum(output_path)
