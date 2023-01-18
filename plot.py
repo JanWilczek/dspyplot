@@ -80,10 +80,10 @@ def plot_signal_and_save(signal, output_path: Path):
     save_signal(output_path)
 
 
-def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, sampling_rate=None):
+def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, frequencies=None):
     plt.figure(figsize=(12, 6))
-    if sampling_rate:
-        frequencies = dft_frequencies(2 * magnitude_spectrum.shape[0] - 1, sampling_rate)
+    if frequencies is not None:
+        # frequencies = dft_frequencies(2 * magnitude_spectrum.shape[0] - 1, sampling_rate)
         plt.plot(frequencies, magnitude_spectrum, style.color)
         plt.xlim([0, frequencies[-1]])
     else:
@@ -101,10 +101,9 @@ def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, sampling_rate=
     save_spectrum(output_path)
 
 
-def plot_spectrum_db_and_save(magnitude_spectrum, output_path: Path, sampling_rate=None):
+def plot_spectrum_db_and_save(magnitude_spectrum, output_path: Path, frequencies=None):
     plt.figure(figsize=(12, 6))
-    if sampling_rate:
-        frequencies = dft_frequencies(2 * magnitude_spectrum.shape[0] - 1, sampling_rate)
+    if frequencies is not None:
         plt.plot(frequencies, magnitude_spectrum, style.color)
         plt.xlim([0, frequencies[-1]])
     else:
@@ -121,10 +120,9 @@ def plot_spectrum_db_and_save(magnitude_spectrum, output_path: Path, sampling_ra
     save_spectrum(output_path)
 
 
-def plot_spectrum_db_in_octaves_and_save(magnitude_spectrum, output_path: Path, sampling_rate):
+def plot_spectrum_db_in_octaves_and_save(magnitude_spectrum, output_path: Path, frequencies):
     plt.figure(figsize=(12, 6))
     min_x = 29
-    frequencies = dft_frequencies(2 * magnitude_spectrum.shape[0] - 1, sampling_rate)
     plt.semilogx(frequencies, magnitude_spectrum, style.color)
     plt.ylim([-60, 0])
     xticks = [31.25, 62.5, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
