@@ -1,7 +1,6 @@
 from pathlib import Path
 import matplotlib.pyplot as plt
 import style
-from dft import dft_frequencies
 
 
 def prepare_output_path(path, stem_suffix: str):
@@ -142,4 +141,24 @@ def plot_spectrum_db_in_octaves_and_save(magnitude_spectrum, output_path: Path, 
     ax.spines['right'].set_visible(False)
 
     save_spectrum(output_path)
+    plt.close()
+
+
+def plot_windowed_signal_and_save(signal, window, output_path: Path):
+    samples_count = signal.shape[0]
+
+    plt.figure(figsize=(12, 6))
+    plt.plot(signal, style.color)
+    plt.plot(window, style.window_color)
+    plt.yticks([-1, 0, 1])
+    plt.xticks([])
+    plt.xlim([0, samples_count])
+    plt.xlabel('time')
+    plt.ylabel('amplitude')
+    ax = plt.gca()
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['bottom'].set_visible(False)
+
+    save_signal(output_path)
     plt.close()
