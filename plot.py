@@ -1,4 +1,5 @@
 from pathlib import Path
+import numpy as np
 import matplotlib.pyplot as plt
 import style
 
@@ -18,6 +19,23 @@ def save_spectrum(output_path):
 
 def save_signal(output_path):
     save(output_path, '_signal')
+
+
+def frequency_ticks(min_frequency=None, max_frequency=None):
+    xticks = np.array([31.25, 62.5, 125, 250, 500, 1000, 2000, 4000, 8000, 16000])
+    xtick_labels = np.array(['31.25', '62.5', '125', '250', '500', '1k', '2k', '4k', '8k', '16k'])
+
+    if min_frequency:
+        min_filter = xticks >= min_frequency
+        xticks = xticks[min_filter]
+        xtick_labels = xtick_labels[min_filter]
+
+    if max_frequency:
+        max_filter = xticks <= max_frequency
+        xticks = xticks[max_filter]
+        xtick_labels = xtick_labels[max_filter]
+
+    return xticks, xtick_labels
 
 
 def _stem(points):
@@ -132,8 +150,7 @@ def plot_spectrum_db_in_octaves_and_save(magnitude_spectrum, output_path: Path, 
     min_x = 29
     plt.semilogx(frequencies, magnitude_spectrum, style.color)
     plt.ylim([-60, 0])
-    xticks = [31.25, 62.5, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
-    xtick_labels = ['31.25', '62.5', '125', '250', '500', '1k', '2k', '4k', '8k', '16k']
+    xticks, xtick_labels = frequency_ticks()
     plt.xticks(xticks, xtick_labels)
     plt.xlim([min_x, frequencies[-1]])
     plt.grid()
