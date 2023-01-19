@@ -44,6 +44,7 @@ def stem_signal_and_save(signal, output_path: Path):
     ax.spines['bottom'].set_visible(False)
 
     save_signal(output_path)
+    plt.close()
 
 
 def stem_spectrum_and_save(magnitude_spectrum, output_path: Path):
@@ -60,6 +61,7 @@ def stem_spectrum_and_save(magnitude_spectrum, output_path: Path):
     ax.spines['bottom'].set_visible(False)
 
     save_spectrum(output_path)
+    plt.close()
 
 
 def plot_signal_and_save(signal, output_path: Path):
@@ -78,6 +80,7 @@ def plot_signal_and_save(signal, output_path: Path):
     ax.spines['bottom'].set_visible(False)
 
     save_signal(output_path)
+    plt.close()
 
 
 def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, frequencies=None):
@@ -99,6 +102,7 @@ def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, frequencies=No
     ax.spines['bottom'].set_visible(False)
 
     save_spectrum(output_path)
+    plt.close()
 
 
 def plot_spectrum_db_and_save(magnitude_spectrum, output_path: Path, frequencies=None):
@@ -118,6 +122,7 @@ def plot_spectrum_db_and_save(magnitude_spectrum, output_path: Path, frequencies
     ax.spines['right'].set_visible(False)
 
     save_spectrum(output_path)
+    plt.close()
 
 
 def plot_spectrum_db_in_octaves_and_save(magnitude_spectrum, output_path: Path, frequencies):
@@ -137,3 +142,4 @@ def plot_spectrum_db_in_octaves_and_save(magnitude_spectrum, output_path: Path, 
     ax.spines['right'].set_visible(False)
 
     save_spectrum(output_path)
+    plt.close()

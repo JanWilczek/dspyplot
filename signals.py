@@ -29,5 +29,5 @@ def generate_sine(frequency_hz, length_seconds, sampling_rate, fade_length=100,
     return signal
 
 
-def generate_noise(length_samples):
-    return np.random.default_rng().uniform(-1, 1, length_samples)
+def generate_noise(length_samples, fade_length=0):
+    return apply_fade(np.random.default_rng(seed=1).uniform(-1, 1, length_samples), fade_length)
