@@ -85,15 +85,18 @@ def plot_signal_and_save(signal, output_path: Path):
 def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, frequencies=None):
     plt.figure(figsize=(12, 6))
     if frequencies is not None:
-        # frequencies = dft_frequencies(2 * magnitude_spectrum.shape[0] - 1, sampling_rate)
         plt.plot(frequencies, magnitude_spectrum, style.color)
-        plt.xlim([0, frequencies[-1]])
+        xlim = [frequencies[0], frequencies[-1]]
+        plt.xlim(xlim)
+        plt.xlabel('frequency [Hz]')
+        plt.hlines(0, xlim[0], xlim[1], colors='k')
     else:
         plt.plot(magnitude_spectrum, style.color)
         plt.xlim([0, magnitude_spectrum.shape[0]])
+        plt.xlabel('frequency')
+        plt.xticks([])
+        plt.hlines(0, 0, magnitude_spectrum.shape[0], colors='k')
     plt.yticks([])
-    plt.hlines(0, 0, magnitude_spectrum.shape[0], colors='k')
-    plt.xlabel('frequency [Hz]')
     plt.ylabel('magnitude')
     ax = plt.gca()
     ax.spines['top'].set_visible(False)
