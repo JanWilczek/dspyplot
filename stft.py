@@ -23,7 +23,7 @@ def plot_spectrogram_and_save(signal, fs, output_path: Path, fft_size=2048, hop_
     
     plt.figure(figsize=(10,4))
     img = librosa.display.specshow(spectrogram_db, y_axis='log', x_axis='time', sr=fs,
-                                   cmap='inferno')
+                                   hop_length=hop_size, cmap='inferno')
     plt.xlabel('Time [s]')
     plt.ylabel('Frequency [Hz]')
     plt.yticks(*frequency_ticks(min_frequency=60, max_frequency=(fs/2)))

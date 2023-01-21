@@ -36,3 +36,19 @@ def generate_noise(length_samples, fade_length=0):
 def zero_pad(signal, zeros_count):
     """Assumes that signal is 1D"""
     return np.concatenate((signal, np.zeros((zeros_count,))))
+
+
+def generate_two_sines_two_pulses(sampling_rate):
+    length_seconds = 1
+    time = np.arange(0, length_seconds, 1/sampling_rate)
+    f1 = 400
+    f2 = 450
+    t1 = 0.45
+    t2 = 0.5
+    n1 = int(t1 * sampling_rate)
+    n2 = int(t2 * sampling_rate)
+    angular_time = 2 * np.pi * time
+    signal = np.sin(f1 * angular_time) + np.sin(f2 * angular_time)
+    signal[n1] = 1
+    signal[n2] = 1
+    return signal
