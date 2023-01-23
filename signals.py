@@ -21,12 +21,28 @@ def apply_fade(signal, fade_length):
 
 def generate_sine(frequency_hz, length_seconds, sampling_rate, fade_length=100,
                   initial_phase_radians=0):
-    length_samples = int(length_seconds * sampling_rate)
-    sample_indices = np.arange(0, length_samples)
-    time_vector = sample_indices / sampling_rate
-    signal = np.sin(2 * np.pi * frequency_hz * time_vector - initial_phase_radians)
+    time = time_vector(length_seconds, sampling_rate)
+    signal = np.sin(2 * np.pi * frequency_hz * time - initial_phase_radians)
     signal = apply_fade(signal, fade_length)
     return signal
+
+
+def time_vector(length_seconds, sampling_rate):
+    length_samples = int(length_seconds * sampling_rate)
+    sample_indices = np.arange(0, length_samples)
+    time = sample_indices / sampling_rate
+    return time
+
+
+def generate_triangle(frequency_hz, length_seconds, sampling_rate, fade_length=100):
+    time = time_vector(length_seconds, sampling_rate)
+    signal = triangle(frequency_hz, time)
+    signal = apply_fade(signal, fade_length)
+    return signal
+
+
+def triangle(frequency_hz, time):
+    return 4 * np.abs(frequency_hz * time - np.floor(frequency_hz * time + 0.5)) - 1
 
 
 def generate_noise(length_samples, fade_length=0):
@@ -48,7 +64,9 @@ def generate_two_sines_two_pulses(sampling_rate):
     n1 = int(t1 * sampling_rate)
     n2 = int(t2 * sampling_rate)
     angular_time = 2 * np.pi * time
-    signal = np.sin(f1 * angular_time) + np.sin(f2 * angular_time)
-    signal[n1] = 1
-    signal[n2] = 1
-    return signal
+    sine_amplitude = 0.25
+    signal = sine_amplitude * np.sin(f1 * angular_time) + sine_amplitude * np.sin(f2 * angular_time)
+    impulse_amplitude = 0.75
+    signal[n1] = impulse_amplitude
+    signal[n2] = impulse_amplitude
+    return time, signal

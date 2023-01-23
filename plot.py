@@ -45,14 +45,17 @@ def _stem(points):
     plt.setp(baseline, visible=False)
 
 
-def stem_signal_and_save(signal, output_path: Path):
+def stem_signal_and_save(signal, output_path: Path, show_xticks=False):
     samples_count = signal.shape[0]
 
     plt.figure(figsize=(12, 6))
     _stem(signal)
     plt.yticks([-1, 0, 1])
-    plt.xticks([])
-    plt.xlim([0, samples_count])
+    if not show_xticks:
+        plt.xticks([])
+    xlim = [-0.5, samples_count - 0.5]
+    plt.xlim(xlim)
+    plt.hlines(0, xlim[0], xlim[-1], colors='k')
     plt.xlabel('sample index $n$')
     plt.ylabel('amplitude')
     ax = plt.gca()
@@ -81,15 +84,20 @@ def stem_spectrum_and_save(magnitude_spectrum, output_path: Path):
     plt.close()
 
 
-def plot_signal_and_save(signal, output_path: Path):
+def plot_signal_and_save(signal, output_path: Path, time=None):
     samples_count = signal.shape[0]
 
     plt.figure(figsize=(12, 6))
-    plt.plot(signal, style.color)
+    if time is not None:
+        plt.plot(time, signal, style.color)
+        plt.xlabel('time [s]')
+        plt.xlim([time[0], time[-1]])
+    else:
+        plt.plot(signal, style.color)
+        plt.xlabel('time')
+        plt.xlim([0, samples_count])
+        plt.xticks([])
     plt.yticks([-1, 0, 1])
-    plt.xticks([])
-    plt.xlim([0, samples_count])
-    plt.xlabel('time')
     plt.ylabel('amplitude')
     ax = plt.gca()
     ax.spines['top'].set_visible(False)
