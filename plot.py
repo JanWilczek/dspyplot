@@ -216,18 +216,19 @@ def plot_window_and_save(window, sampling_rate, output_path):
     plt.close()
 
 
-def plot_analog_signal_and_save(x, y, output_path: Path, xticks, xtick_labels, ylim):
+def plot_analog_signal_and_save(x, y, output_path: Path, xlabel, xticks, xtick_labels, ylim, yticks, ytick_labels):
     plt.figure(figsize=(12, 6))
     plt.plot(x, y, style.color)
     plt.yticks([0, 1])
     xlim = [x[0], x[-1]]
     plt.hlines(0, xlim[0], xlim[1], colors='k')
-    plt.hlines(1, xlim[0], 0, colors='gray', linestyles='dashed')
+    plt.hlines(yticks[-1], xlim[0], 0, colors='gray', linestyles='dashed')
     plt.vlines(0, ylim[0], ylim[1], colors='k')
     plt.xlim(xlim)
-    plt.xlabel('$t$')
+    plt.xlabel(xlabel)
     plt.xticks(xticks, xtick_labels)
     plt.ylim(ylim)
+    plt.yticks(yticks, ytick_labels)
     ax = plt.gca()
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
