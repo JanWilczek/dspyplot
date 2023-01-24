@@ -38,8 +38,11 @@ def frequency_ticks(min_frequency=None, max_frequency=None):
     return xticks, xtick_labels
 
 
-def _stem(points):
-    markerline, stemlines, baseline = plt.stem(points, **style.stem_params)
+def _stem(points, bin_indices):
+    if bin_indices is not None:
+        markerline, stemlines, baseline = plt.stem(bin_indices, points, **style.stem_params)
+    else:
+        markerline, stemlines, baseline = plt.stem(points, **style.stem_params)
     plt.setp(markerline, 'color', style.color)
     plt.setp(stemlines, 'color', style.color)
     plt.setp(baseline, visible=False)
@@ -67,12 +70,17 @@ def stem_signal_and_save(signal, output_path: Path, show_xticks=False):
     plt.close()
 
 
-def stem_spectrum_and_save(magnitude_spectrum, output_path: Path):
+def stem_spectrum_and_save(magnitude_spectrum, output_path: Path, bin_indices=None):
     plt.figure(figsize=(12, 6))
-    _stem(magnitude_spectrum)
+    _stem(magnitude_spectrum, bin_indices)
     plt.yticks([])
-    plt.xlim([0, magnitude_spectrum.shape[0]])
-    plt.hlines(0, 0, magnitude_spectrum.shape[0], colors='k')
+    if bin_indices is None:
+        plt.xlim([0, magnitude_spectrum.shape[0]])
+        plt.hlines(0, 0, magnitude_spectrum.shape[0], colors='k')
+    else:
+        xlim = [bin_indices[0]*1.1, bin_indices[-1]*1.1]
+        plt.xlim(xlim)
+        plt.hlines(0, *xlim, colors='k')
     plt.xlabel('frequency bin index $k$')
     plt.ylabel('magnitude')
     ax = plt.gca()
@@ -84,21 +92,26 @@ def stem_spectrum_and_save(magnitude_spectrum, output_path: Path):
     plt.close()
 
 
-def plot_signal_and_save(signal, output_path: Path, time=None):
+def plot_signal_and_save(signal, output_path: Path, time=None, ylim=None):
     samples_count = signal.shape[0]
 
     plt.figure(figsize=(12, 6))
     if time is not None:
         plt.plot(time, signal, style.color)
         plt.xlabel('time [s]')
-        plt.xlim([time[0], time[-1]])
+        xlim = [time[0], time[-1]]
+        plt.xlim(xlim)
     else:
         plt.plot(signal, style.color)
         plt.xlabel('time')
-        plt.xlim([0, samples_count])
+        xlim = [0, samples_count]
+        plt.xlim(xlim)
         plt.xticks([])
     plt.yticks([-1, 0, 1])
     plt.ylabel('amplitude')
+    plt.hlines(0, xlim[0], xlim[1], 'k')
+    if ylim is not None:
+        plt.ylim(ylim)
     ax = plt.gca()
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
