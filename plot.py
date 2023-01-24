@@ -70,10 +70,10 @@ def stem_signal_and_save(signal, output_path: Path, show_xticks=False):
     plt.close()
 
 
-def stem_spectrum_and_save(magnitude_spectrum, output_path: Path, bin_indices=None):
+def stem_spectrum_and_save(magnitude_spectrum, output_path: Path, bin_indices=None, yticks=None):
     plt.figure(figsize=(12, 6))
     _stem(magnitude_spectrum, bin_indices)
-    plt.yticks([])
+    plt.yticks(yticks)
     if bin_indices is None:
         plt.xlim([0, magnitude_spectrum.shape[0]])
         plt.hlines(0, 0, magnitude_spectrum.shape[0], colors='k')
