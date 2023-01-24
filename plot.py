@@ -216,7 +216,8 @@ def plot_window_and_save(window, sampling_rate, output_path):
     plt.close()
 
 
-def plot_analog_signal_and_save(x, y, output_path: Path, xlabel, xticks, xtick_labels, ylim, yticks, ytick_labels):
+def plot_analog_signal_and_save(x, y, output_path: Path, xlabel, xticks, xtick_labels, ylim, yticks,
+                                ytick_labels):
     plt.figure(figsize=(12, 6))
     plt.plot(x, y, style.color)
     plt.yticks([0, 1])
