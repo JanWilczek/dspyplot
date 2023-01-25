@@ -34,15 +34,28 @@ def time_vector(length_seconds, sampling_rate):
     return time
 
 
-def generate_triangle(frequency_hz, length_seconds, sampling_rate, fade_length=100):
+def generate_signal(frequency_hz, length_seconds, sampling_rate, fade_length, generator):
     time = time_vector(length_seconds, sampling_rate)
-    signal = triangle(frequency_hz, time)
+    signal = generator(frequency_hz, time)
     signal = apply_fade(signal, fade_length)
     return signal
 
 
+def generate_triangle(frequency_hz, length_seconds, sampling_rate, fade_length=100):
+    return generate_signal(frequency_hz, length_seconds, sampling_rate, fade_length, triangle)
+
+
+def generate_sawtooth(frequency_hz, length_seconds, sampling_rate, fade_length=100):
+    return generate_signal(frequency_hz, length_seconds, sampling_rate, fade_length, sawtooth)
+
+
 def triangle(frequency_hz, time):
     return 4 * np.abs(frequency_hz * time - np.floor(frequency_hz * time + 0.5)) - 1
+
+
+def sawtooth(frequency_hz, time):
+    period = 1 / frequency_hz
+    return 2 * (time % period) * frequency_hz - 1
 
 
 def generate_noise(length_samples, fade_length=0):

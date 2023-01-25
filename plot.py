@@ -95,7 +95,7 @@ def stem_spectrum_and_save(magnitude_spectrum, output_path: Path, bin_indices=No
     plt.close()
 
 
-def plot_signal_and_save(signal, output_path: Path, time=None, ylim=None):
+def plot_signal_and_save(signal, output_path: Path, time=None, ylim=None, extra_command=None):
     samples_count = signal.shape[0]
 
     plt.figure(figsize=(12, 6))
@@ -120,11 +120,15 @@ def plot_signal_and_save(signal, output_path: Path, time=None, ylim=None):
     ax.spines['right'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
 
+    if extra_command is not None:
+        extra_command()
+
     save_signal(output_path)
     plt.close()
 
 
-def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, frequencies=None):
+def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, frequencies=None, xticks=None,
+                           xtick_labels=None):
     plt.figure(figsize=(12, 6))
     if frequencies is not None:
         plt.plot(frequencies, magnitude_spectrum, style.color)
@@ -136,7 +140,7 @@ def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, frequencies=No
         plt.plot(magnitude_spectrum, style.color)
         plt.xlim([0, magnitude_spectrum.shape[0]])
         plt.xlabel('frequency')
-        plt.xticks([])
+        plt.xticks(xticks, xtick_labels)
         plt.hlines(0, 0, magnitude_spectrum.shape[0], colors='k')
     plt.yticks([])
     plt.ylabel('magnitude')
