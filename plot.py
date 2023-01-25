@@ -128,17 +128,20 @@ def plot_signal_and_save(signal, output_path: Path, time=None, ylim=None, extra_
 
 
 def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, frequencies=None, xticks=None,
-                           xtick_labels=None):
+                           xtick_labels=None, xlim=None):
     plt.figure(figsize=(12, 6))
     if frequencies is not None:
         plt.plot(frequencies, magnitude_spectrum, style.color)
-        xlim = [frequencies[0], frequencies[-1]]
+        if xlim is None:
+            xlim = [frequencies[0], frequencies[-1]]
         plt.xlim(xlim)
         plt.xlabel('frequency [Hz]')
         plt.hlines(0, xlim[0], xlim[1], colors='k')
     else:
         plt.plot(magnitude_spectrum, style.color)
-        plt.xlim([0, magnitude_spectrum.shape[0]])
+        if xlim is None:
+            xlim = [0, magnitude_spectrum.shape[0]]
+        plt.xlim(xlim)
         plt.xlabel('frequency')
         plt.xticks(xticks, xtick_labels)
         plt.hlines(0, 0, magnitude_spectrum.shape[0], colors='k')
