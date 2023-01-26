@@ -8,7 +8,7 @@ def prepare_output_path(path, stem_suffix: str):
     return path.with_name(path.stem + stem_suffix + style.img_file_suffix)
 
 
-def save(output_path, suffix):
+def save(output_path, suffix=''):
     output_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(prepare_output_path(output_path, suffix), **style.save_params)
 
