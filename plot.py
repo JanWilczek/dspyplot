@@ -4,6 +4,25 @@ import matplotlib.pyplot as plt
 import style
 
 
+class PlotPeriodCommand:
+    def __init__(self, period_start, period_length, arrows_y=1.2):
+        self.vlines_style = dict(linestyle='--', color='grey')
+        self.arrow_style = dict(length_includes_head=True, head_width=0.04, head_length=0.03, color='k')
+        self.period_start = period_start
+        self.period_length = period_length
+        self.period_end = self.period_start + self.period_length
+        self.arrow_y = arrows_y
+        self.label_x = np.mean([self.period_start, self.period_end])
+        self.label_y = self.arrow_y * 1.1
+
+    def __call__(self):
+        plt.vlines(self.period_start, 0, self.arrow_y, **self.vlines_style)
+        plt.vlines(self.period_end, 0, self.arrow_y, **self.vlines_style)
+        plt.arrow(self.period_start, self.arrow_y, self.period_length, 0, **self.arrow_style)
+        plt.arrow(self.period_end, self.arrow_y, -self.period_length, 0, **self.arrow_style)
+        plt.text(self.label_x, self.label_y, '$T$')
+
+
 def prepare_output_path(path, stem_suffix: str):
     return path.with_name(path.stem + stem_suffix + style.img_file_suffix)
 
