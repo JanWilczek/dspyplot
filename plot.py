@@ -57,7 +57,7 @@ def frequency_ticks(min_frequency=None, max_frequency=None):
     return xticks, xtick_labels
 
 
-def _stem(points, bin_indices):
+def _stem(points, bin_indices=None):
     if bin_indices is not None:
         markerline, stemlines, baseline = plt.stem(bin_indices, points, **style.stem_params)
     else:
