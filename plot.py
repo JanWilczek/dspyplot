@@ -67,12 +67,17 @@ def _stem(points, bin_indices=None):
     plt.setp(baseline, visible=False)
 
 
-def stem_signal_and_save(signal, output_path: Path, show_xticks=False):
+def stem_signal_and_save(signal, output_path: Path, show_xticks=False, yticks=None):
     samples_count = signal.shape[0]
 
     plt.figure(figsize=(12, 6))
     _stem(signal)
-    plt.yticks([-1, 0, 1])
+    if yticks is None:
+        plt.yticks([-1, 0, 1])
+    else:
+        plt.yticks(yticks)
+        ylim_multiplier = 1.1
+        plt.ylim([ylim_multiplier*yticks[0], ylim_multiplier*yticks[-1]])
     if not show_xticks:
         plt.xticks([])
     xlim = [-0.5, samples_count - 0.5]
