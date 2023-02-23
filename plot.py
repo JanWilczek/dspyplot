@@ -152,7 +152,7 @@ def plot_signal_and_save(signal, output_path: Path, time=None, ylim=None, extra_
 
 
 def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, frequencies=None, xticks=None,
-                           xtick_labels=None, xlim=None):
+                           xtick_labels=None, xlim=None, extra_command=None):
     plt.figure(figsize=(12, 6))
     if frequencies is not None:
         plt.plot(frequencies, magnitude_spectrum, style.color)
@@ -175,6 +175,9 @@ def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, frequencies=No
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
+
+    if extra_command is not None:
+        extra_command()
 
     save_spectrum(output_path)
     plt.close()
