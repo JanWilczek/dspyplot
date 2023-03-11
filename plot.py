@@ -2,6 +2,7 @@ from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import style
+import scipy.signal as signal
 
 
 class PlotPeriodCommand:
@@ -310,4 +311,18 @@ def plot_analog_signal_and_save(x, y, output_path: Path, xlabel, xticks, xtick_l
     ax.spines['left'].set_visible(False)
 
     save_signal(output_path)
+    plt.close()
+
+
+def plot_phase_response_and_save(b, a, output_path):
+    """b, a have their meaning from scipy.signal, see scipy.signal.butter"""
+    w, h = signal.freqz(b, a)
+    phase_response = np.angle(h)
+    plt.plot(w, phase_response)
+    plt.xlabel('Frequency [radians / sample]')
+    plt.ylabel('Angle [radians]')
+    plt.margins(0, 0.1)
+    plt.grid(which='both', axis='both')
+
+    save(output_path, '_phase_response')
     plt.close()
