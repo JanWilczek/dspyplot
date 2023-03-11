@@ -318,11 +318,19 @@ def plot_phase_response_and_save(b, a, output_path):
     """b, a have their meaning from scipy.signal, see scipy.signal.butter"""
     w, h = signal.freqz(b, a)
     phase_response = np.angle(h)
-    plt.plot(w, phase_response)
+    plt.plot(w, phase_response, style.color)
     plt.xlabel('Frequency [radians / sample]')
     plt.ylabel('Angle [radians]')
     plt.margins(0, 0.1)
     plt.grid(which='both', axis='both')
+    ticks = np.array([0, np.pi/4, np.pi/2, 3 * np.pi / 4, np.pi])
+    plt.xticks(ticks,
+               ['$0$', r'$\frac{\pi}{4}$', r'$\frac{\pi}{2}$', r'$\frac{3\pi}{4}$', r'$\pi$'])
+    plt.yticks(-ticks,
+               ['$0$', r'$-\frac{\pi}{4}$', r'$-\frac{\pi}{2}$', r'$-\frac{3\pi}{4}$', r'$-\pi$'])
+    ax = plt.gca()
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
 
     save(output_path, '_phase_response')
     plt.close()
