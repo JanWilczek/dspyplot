@@ -57,13 +57,13 @@ def frequency_ticks(min_frequency=None, max_frequency=None):
     return xticks, xtick_labels
 
 
-def _stem(points, bin_indices=None):
+def _stem(points, bin_indices=None, alpha=1.0):
     if bin_indices is not None:
         markerline, stemlines, baseline = plt.stem(bin_indices, points, **style.stem_params)
     else:
         markerline, stemlines, baseline = plt.stem(points, **style.stem_params)
-    plt.setp(markerline, 'color', style.color)
-    plt.setp(stemlines, 'color', style.color)
+    plt.setp(markerline, color=style.color, alpha=alpha)
+    plt.setp(stemlines, color=style.color, alpha=alpha)
     plt.setp(baseline, visible=False)
 
 
@@ -80,6 +80,29 @@ def stem_signal_and_save(signal, output_path: Path, show_xticks=False, yticks=No
         plt.ylim([ylim_multiplier*yticks[0], ylim_multiplier*yticks[-1]])
     if not show_xticks:
         plt.xticks([])
+    xlim = [-0.5, samples_count - 0.5]
+    plt.xlim(xlim)
+    plt.hlines(0, xlim[0], xlim[-1], colors='k')
+    plt.xlabel('sample index $n$')
+    plt.ylabel('amplitude')
+    ax = plt.gca()
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['bottom'].set_visible(False)
+
+    save_signal(output_path)
+    plt.close()
+
+
+def stem_signals_and_save(signal1, signal2, output_path: Path, signal1_alpha=1.0,
+                          signal2_alpha=1.0):
+    samples_count = signal1.shape[0]
+
+    plt.figure(figsize=(12, 6))
+    _stem(signal1, alpha=signal1_alpha)
+    _stem(signal2, alpha=signal2_alpha)
+    plt.yticks([-1, 0, 1])
+    plt.xticks([])
     xlim = [-0.5, samples_count - 0.5]
     plt.xlim(xlim)
     plt.hlines(0, xlim[0], xlim[-1], colors='k')
