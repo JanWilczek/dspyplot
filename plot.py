@@ -314,11 +314,13 @@ def plot_analog_signal_and_save(x, y, output_path: Path, xlabel, xticks, xtick_l
     plt.close()
 
 
-def plot_phase_response_and_save(b, a, output_path, yticks=None, ytick_labels=None):
+def plot_phase_response_and_save(b, a, output_path, yticks=None, ytick_labels=None, unwrap=False):
     """b, a have their meaning from scipy.signal, see scipy.signal.butter"""
 
     w, h = signal.freqz(b, a)
     phase_response = np.angle(h)
+    if unwrap:
+        phase_response = np.unwrap(phase_response)
     plt.plot(w, phase_response, style.color)
     plt.xlabel('Frequency [radians / sample]')
     plt.ylabel('Angle [radians]')
@@ -327,10 +329,14 @@ def plot_phase_response_and_save(b, a, output_path, yticks=None, ytick_labels=No
     ticks = np.array([0, np.pi/4, np.pi/2, 3 * np.pi / 4, np.pi])
     plt.xticks(ticks,
                ['$0$', r'$\frac{\pi}{4}$', r'$\frac{\pi}{2}$', r'$\frac{3\pi}{4}$', r'$\pi$'])
-    if yticks is None:
-        yticks = np.arange(-np.pi, np.pi+0.1, np.pi/2)
-    if ytick_labels is None:
-        ytick_labels = [ r'$-\pi$', r'$-\frac{\pi}{2}$', '$0$', r'$\frac{\pi}{2}$', r'$\pi$']
+
+    if not unwrap:
+        if yticks is None:
+            yticks = np.arange(-np.pi, np.pi+0.1, np.pi/2)
+
+        if ytick_labels is None:
+            ytick_labels = [ r'$-\pi$', r'$-\frac{\pi}{2}$', '$0$', r'$\frac{\pi}{2}$', r'$\pi$']
+
     plt.yticks(yticks, ytick_labels)
     ax = plt.gca()
     ax.spines['top'].set_visible(False)
