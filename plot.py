@@ -68,7 +68,7 @@ def _stem(points, bin_indices=None, alpha=1.0):
     plt.setp(baseline, visible=False)
 
 
-def stem_signal_and_save(signal, output_path: Path, show_xticks=False, yticks=None):
+def stem_signal_and_save(signal, output_path: Path, show_xticks=False, yticks=None, xticks=None):
     samples_count = signal.shape[0]
 
     plt.figure(figsize=(12, 6))
@@ -81,6 +81,8 @@ def stem_signal_and_save(signal, output_path: Path, show_xticks=False, yticks=No
         plt.ylim([ylim_multiplier*yticks[0], ylim_multiplier*yticks[-1]])
     if not show_xticks:
         plt.xticks([])
+    if xticks is not None:
+        plt.xticks(xticks)
     xlim = [-0.5, samples_count - 0.5]
     plt.xlim(xlim)
     plt.hlines(0, xlim[0], xlim[-1], colors='k')
@@ -321,6 +323,8 @@ def plot_phase_response_and_save(b, a, output_path, yticks=None, ytick_labels=No
     phase_response = np.angle(h)
     if unwrap:
         phase_response = np.unwrap(phase_response)
+
+    plt.figure(figsize=(12, 6))
     plt.plot(w, phase_response, style.color)
     plt.xlabel('Frequency [radians / sample]')
     plt.ylabel('Angle [radians]')
@@ -344,3 +348,23 @@ def plot_phase_response_and_save(b, a, output_path, yticks=None, ytick_labels=No
 
     save(output_path, '_phase_response')
     plt.close()
+
+
+def plot_group_delay_and_save(b, a, output_path):
+    """b, a have their meaning from scipy.signal, see scipy.signal.butter"""
+    w, gd = signal.group_delay((b, a))
+
+    plt.figure(figsize=(12, 6))
+    plt.plot(w, gd, style.color)
+    plt.xlabel('Group delay [samples]')
+    plt.ylabel('Angle [radians]')
+    plt.margins(0, 0.1)
+    plt.grid(which='both', axis='both')
+    ticks = np.array([0, np.pi / 4, np.pi / 2, 3 * np.pi / 4, np.pi])
+    plt.xticks(ticks,
+               ['$0$', r'$\frac{\pi}{4}$', r'$\frac{\pi}{2}$', r'$\frac{3\pi}{4}$', r'$\pi$'])
+    ax = plt.gca()
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    save(output_path, '_group_delay')
