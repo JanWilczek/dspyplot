@@ -316,13 +316,20 @@ def plot_analog_signal_and_save(x, y, output_path: Path, xlabel, xticks, xtick_l
     plt.close()
 
 
-def plot_magnitude_response_and_save(b, a, output_path, yticks=None):
+def plot_magnitude_response_and_save(b, a, output_path, ylim, yticks=None, db=False):
+    """b, a have their meaning from scipy.signal, see scipy.signal.butter"""
     w, h = signal.freqz(b, a)
     magnitude_response = np.abs(h)
 
+    ylabel = 'Magnitude'
+
+    if db:
+        magnitude_response = 20 * np.log10(np.maximum(magnitude_response, 1e-6))
+        ylabel += ' [dB]'
+
     plt.figure(figsize=(12, 6))
     plt.plot(w, magnitude_response, style.color)
-    plt.ylim([0, 1.5])
+    plt.ylim(ylim)
     plt.xlabel('Frequency [radians / sample]')
     plt.margins(0, 0.1)
     plt.grid(which='both', axis='both')
@@ -331,6 +338,7 @@ def plot_magnitude_response_and_save(b, a, output_path, yticks=None):
                ['$0$', r'$\frac{\pi}{4}$', r'$\frac{\pi}{2}$', r'$\frac{3\pi}{4}$', r'$\pi$'])
     if yticks is not None:
         plt.yticks(yticks)
+    plt.ylabel(ylabel)
     ax = plt.gca()
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
