@@ -478,7 +478,11 @@ def offset_axis_ticklabels_by(fig, axis, dx, dy):
         label.set_transform(label.get_transform() + offset)
 
 
-def plot_on_unit_circle_in_3d_and_save(two_sided_magnitude_spectrum, output_path):
+def plot_on_unit_circle_in_3d_and_save(two_sided_magnitude_spectrum, output_path, zlim=None,
+                                       zticks=None):
+    if zticks is None:
+        zticks = []
+
     phi = np.linspace(0, 2 * np.pi, two_sided_magnitude_spectrum.shape[0])
 
     ax = plt.figure().add_subplot(projection='3d')
@@ -512,8 +516,7 @@ def plot_on_unit_circle_in_3d_and_save(two_sided_magnitude_spectrum, output_path
     ax.set_xticks(ticks)
     ax.set_xticklabels(xtick_labels)
     ax.set_yticks(ticks)
-    ax.set_zticks([])
-    ax.set_zticklabels([])
+    ax.set_zticks(zticks)
     ax.set_zlabel('magnitude')
 
     # labels
@@ -521,4 +524,7 @@ def plot_on_unit_circle_in_3d_and_save(two_sided_magnitude_spectrum, output_path
     ax.text(-1.5, 0.1, 0, '$\pi/2$', 'y')
     ax.text(-0.2, -1, 0, '$\pi$', 'y')
 
-    save_spectrum(output_path)
+    if zlim is not None:
+        ax.set_zlim(zlim)
+
+    save(output_path, suffix='_spectrum_3d')
