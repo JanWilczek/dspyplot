@@ -476,3 +476,49 @@ def offset_axis_ticklabels_by(fig, axis, dx, dy):
     # apply offset transform to all ticklabels.
     for label in axis.get_majorticklabels():
         label.set_transform(label.get_transform() + offset)
+
+
+def plot_on_unit_circle_in_3d_and_save(two_sided_magnitude_spectrum, output_path):
+    phi = np.linspace(0, 2 * np.pi, two_sided_magnitude_spectrum.shape[0])
+
+    ax = plt.figure().add_subplot(projection='3d')
+    r = 1
+    x = r * np.sin(phi)
+    y = r * np.cos(phi)
+
+    ax.plot(x, y, 0, 'k')
+
+    axis_limit = 1.1
+    point_count = 100
+    x_axis_x = np.linspace(-axis_limit, axis_limit, point_count)
+    x_axis_y = np.zeros_like(x_axis_x)
+    ax.plot(x_axis_x, x_axis_y, 0, 'k')
+    ax.plot(x_axis_y, x_axis_x, 0, 'k')
+
+    ax.plot(x, y, two_sided_magnitude_spectrum, style.color)
+
+    # make the panes transparent
+    ax.xaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+    ax.yaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+    ax.zaxis.set_pane_color((1.0, 1.0, 1.0, 0.0))
+    # make the grid lines transparent
+    grid_lines_color = (0, 0, 0, 0)
+    ax.xaxis._axinfo["grid"]['color'] = grid_lines_color
+    ax.yaxis._axinfo["grid"]['color'] = grid_lines_color
+    ax.zaxis._axinfo["grid"]['color'] = grid_lines_color
+
+    ticks = [-1, 0, 1]
+    xtick_labels = ['1', '0', '-1']
+    ax.set_xticks(ticks)
+    ax.set_xticklabels(xtick_labels)
+    ax.set_yticks(ticks)
+    ax.set_zticks([])
+    ax.set_zticklabels([])
+    ax.set_zlabel('magnitude')
+
+    # labels
+    ax.text(0.2, 0.5, 0, '$0$', 'y')
+    ax.text(-1.5, 0.1, 0, '$\pi/2$', 'y')
+    ax.text(-0.2, -1, 0, '$\pi$', 'y')
+
+    save_spectrum(output_path)
