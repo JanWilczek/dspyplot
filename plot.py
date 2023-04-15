@@ -1,6 +1,10 @@
 from pathlib import Path
+
+import matplotlib
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
+
 import style
 import scipy.signal as signal
 
@@ -399,3 +403,76 @@ def plot_group_delay_and_save(b, a, output_path):
     ax.spines['right'].set_visible(False)
 
     save(output_path, '_group_delay')
+
+
+def pole_zero_plot_and_save(zeros, poles, output_path):
+    """zeros and poles should be array-like of real or complex numbers"""
+    pole_zero_plot(zeros, poles)
+    save(output_path, suffix='_pole_zero_plot')
+    plt.close()
+
+
+def pole_zero_plot(zeros, poles=None):
+    if poles is None:
+        poles = []
+
+    ax = plot_z_plane()
+
+    for zero in zeros:
+        zero = complex(zero)
+        circle = Circle((zero.real, zero.imag), 0.04, edgecolor='k', fill=False, linewidth=3)
+        ax.add_patch(circle)
+
+    for pole in poles:
+        pole = complex(pole)
+        ax.scatter(pole.real, pole.imag, s=200, color='k', marker='x', linewidths=3)
+
+
+def plot_z_plane():
+    unit_circle = Circle((0, 0), 1, edgecolor='k', fill=False)
+    # Select length of axes and the space between tick labels
+    xmin, xmax, ymin, ymax = -0.5, 0.5, -0.5, 0.5
+    # Plot points
+    fig, ax = plt.subplots(figsize=(10, 10))
+    ax.add_patch(unit_circle)
+    # Set identical scales for both axes
+    ax.set(xlim=(xmin - 1, xmax + 1), ylim=(ymin - 1, ymax + 1), aspect='equal')
+    # Set bottom and left spines as x and y axes of coordinate system
+    ax.spines['bottom'].set_position('zero')
+    ax.spines['left'].set_position('zero')
+    # Remove top and right spines
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    # Create labels placed at the end of the axes
+    ax.set_xlabel(r'$\Re \{z\}$', size=18, labelpad=-10, x=1.03)
+    ax.set_ylabel(r'$\Im \{z\}$', size=18, labelpad=-24, y=1.02, rotation=0)
+    minor = True
+    ticks = np.arange(-1, 2)
+    ax.set_xticks(ticks, minor=minor)
+    ax.set_yticks(ticks, minor=minor)
+    ax.set_xticklabels([], minor=minor)
+    ax.set_yticklabels([], minor=minor)
+    minor = False
+    ax.set_xticks(np.array(ticks), minor=minor)
+    ax.set_yticks(np.array([-1, 1]), minor=minor)
+    # Draw major and minor grid lines
+    ax.grid(which='both', color='grey', linewidth=1, linestyle='-', alpha=0.2)
+    # Draw arrows
+    arrow_fmt = dict(markersize=10, color='black', clip_on=False)
+    ax.plot(1, 0, marker='>', transform=ax.get_yaxis_transform(), **arrow_fmt)
+    ax.plot(0, 1, marker='^', transform=ax.get_xaxis_transform(), **arrow_fmt)
+
+    plt.setp(ax.xaxis.get_majorticklabels(), ha="left")
+    plt.setp(ax.yaxis.get_majorticklabels(), ha="left")
+    offset_axis_ticklabels_by(fig, ax.xaxis, 5 / 72., -5 / 72.)
+    offset_axis_ticklabels_by(fig, ax.yaxis, 15 / 72., -15 / 72.)
+
+    return ax
+
+
+def offset_axis_ticklabels_by(fig, axis, dx, dy):
+    offset = matplotlib.transforms.ScaledTranslation(dx, dy, fig.dpi_scale_trans)
+
+    # apply offset transform to all ticklabels.
+    for label in axis.get_majorticklabels():
+        label.set_transform(label.get_transform() + offset)
