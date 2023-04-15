@@ -456,7 +456,7 @@ def plot_z_plane():
     ax.set_xticks(np.array(ticks), minor=minor)
     ax.set_yticks(np.array([-1, 1]), minor=minor)
     # Draw major and minor grid lines
-    ax.grid(which='both', color='grey', linewidth=1, linestyle='-', alpha=0.2)
+    # ax.grid(which='both', color='grey', linewidth=1, linestyle='-', alpha=0.2)
     # Draw arrows
     arrow_fmt = dict(markersize=10, color='black', clip_on=False)
     ax.plot(1, 0, marker='>', transform=ax.get_yaxis_transform(), **arrow_fmt)
