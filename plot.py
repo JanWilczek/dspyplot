@@ -62,13 +62,13 @@ def frequency_ticks(min_frequency=None, max_frequency=None):
     return xticks, xtick_labels
 
 
-def _stem(points, bin_indices=None, alpha=1.0):
+def _stem(points, bin_indices=None, alpha=1.0, color=style.color):
     if bin_indices is not None:
         markerline, stemlines, baseline = plt.stem(bin_indices, points, **style.stem_params)
     else:
         markerline, stemlines, baseline = plt.stem(points, **style.stem_params)
-    plt.setp(markerline, color=style.color, alpha=alpha)
-    plt.setp(stemlines, color=style.color, alpha=alpha)
+    plt.setp(markerline, color=color, alpha=alpha)
+    plt.setp(stemlines, color=color, alpha=alpha)
     plt.setp(baseline, visible=False)
 
 
@@ -528,3 +528,12 @@ def plot_on_unit_circle_in_3d_and_save(two_sided_magnitude_spectrum, output_path
         ax.set_zlim(zlim)
 
     save(output_path, suffix='_spectrum_3d')
+
+
+def stem_impulse_response_and_save(b, a, output_path):
+    system = signal.dlti(b, a)
+    t, ir = signal.dimpulse(system, n=30)
+    ir = np.squeeze(ir)
+
+    stem_signal_and_save(ir, output_path=output_path, show_xticks=True)
+
