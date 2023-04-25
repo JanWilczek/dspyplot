@@ -391,8 +391,8 @@ def plot_group_delay_and_save(b, a, output_path):
 
     plt.figure(figsize=(12, 6))
     plt.plot(w, gd, style.color)
-    plt.xlabel('Group delay [samples]')
-    plt.ylabel('Angle [radians]')
+    plt.xlabel('Frequency [radians / sample]')
+    plt.ylabel('Group delay [samples]')
     plt.margins(0, 0.1)
     plt.grid(which='both', axis='both')
     ticks = np.array([0, np.pi / 4, np.pi / 2, 3 * np.pi / 4, np.pi])
