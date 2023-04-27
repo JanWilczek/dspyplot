@@ -73,7 +73,7 @@ def _stem(points, bin_indices=None, alpha=1.0, color=style.color):
 
 
 def stem_signal_and_save(signal, output_path: Path, show_xticks=False, yticks=None, xticks=None,
-                         bin_indices=None):
+                         bin_indices=None, xtick_labels=None):
     samples_count = signal.shape[0]
 
     plt.figure(figsize=(12, 6))
@@ -87,8 +87,11 @@ def stem_signal_and_save(signal, output_path: Path, show_xticks=False, yticks=No
     if not show_xticks:
         plt.xticks([])
     if xticks is not None:
-        plt.xticks(xticks)
-    xlim = [-0.5, samples_count - 0.5]
+        plt.xticks(xticks, xtick_labels)
+    if bin_indices is None:
+        xlim = [-0.5, samples_count - 0.5]
+    else:
+        xlim = [np.amin(bin_indices) - 0.5, np.amax(bin_indices) + 1]
     plt.xlim(xlim)
     plt.hlines(0, xlim[0], xlim[-1], colors='k')
     plt.xlabel('sample index $n$')
