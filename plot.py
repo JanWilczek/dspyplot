@@ -72,11 +72,12 @@ def _stem(points, bin_indices=None, alpha=1.0, color=style.color):
     plt.setp(baseline, visible=False)
 
 
-def stem_signal_and_save(signal, output_path: Path, show_xticks=False, yticks=None, xticks=None):
+def stem_signal_and_save(signal, output_path: Path, show_xticks=False, yticks=None, xticks=None,
+                         bin_indices=None):
     samples_count = signal.shape[0]
 
     plt.figure(figsize=(12, 6))
-    _stem(signal)
+    _stem(signal, bin_indices)
     if yticks is None:
         plt.yticks([-1, 0, 1])
     else:
