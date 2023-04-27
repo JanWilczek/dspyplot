@@ -324,7 +324,8 @@ def plot_analog_signal_and_save(x, y, output_path: Path, xlabel, xticks, xtick_l
     plt.close()
 
 
-def plot_magnitude_response_and_save(b, a, output_path, ylim, yticks=None, db=False):
+def plot_magnitude_response_and_save(b, a, output_path, ylim, yticks=None, db=False,
+                                     cutoff_frequency=None):
     """b, a have their meaning from scipy.signal, see scipy.signal.butter"""
     w, h = signal.freqz(b, a)
     magnitude_response = np.abs(h)
@@ -341,9 +342,12 @@ def plot_magnitude_response_and_save(b, a, output_path, ylim, yticks=None, db=Fa
     plt.xlabel('Frequency [radians / sample]')
     plt.margins(0, 0.1)
     plt.grid(which='both', axis='both')
-    ticks = np.array([0, np.pi/4, np.pi/2, 3 * np.pi / 4, np.pi])
-    plt.xticks(ticks,
-               ['$0$', r'$\frac{\pi}{4}$', r'$\frac{\pi}{2}$', r'$\frac{3\pi}{4}$', r'$\pi$'])
+    ticks = [0, np.pi/4, np.pi/2, 3 * np.pi / 4, np.pi]
+    tick_labels = ['$0$', r'$\frac{\pi}{4}$', r'$\frac{\pi}{2}$', r'$\frac{3\pi}{4}$', r'$\pi$']
+    if cutoff_frequency is not None:
+        plt.vlines(cutoff_frequency, ylim[0], ylim[1], style.grey, '--', lw=2)
+        plt.text(cutoff_frequency, ylim[0]-5.5 if db else -0.18, r'$\omega_c$', ha='center')
+    plt.xticks(ticks, tick_labels)
     if yticks is not None:
         plt.yticks(yticks)
     plt.ylabel(ylabel)
