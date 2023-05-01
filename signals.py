@@ -1,6 +1,9 @@
 import scipy.signal as sig
 import numpy as np
 
+OCTAVE_BANDS = np.asarray([63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000])
+OCTAVE_BANDS_LABELS = [str(f) for f in OCTAVE_BANDS]
+
 
 def apply_fade(signal, fade_length):
     if fade_length == 0:
