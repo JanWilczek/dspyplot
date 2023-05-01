@@ -83,3 +83,11 @@ def generate_two_sines_two_pulses(sampling_rate):
     signal[n1] = impulse_amplitude
     signal[n2] = impulse_amplitude
     return time, signal
+
+
+def db2amplitude(db):
+    return np.power(10, db / 20)
+
+
+def amplitude2db(amplitude):
+    return 20 * np.log10(np.maximum(amplitude, 1e-6))
