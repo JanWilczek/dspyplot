@@ -545,3 +545,22 @@ def stem_impulse_response_and_save(b, a, output_path):
 
     stem_signal_and_save(ir, output_path=output_path, show_xticks=True)
 
+
+def plot_analog_magnitude_response_and_save(b, a, output_path):
+    w, h = signal.freqs(b, a)
+    magnitude_response = np.abs(h)
+    plt.figure(figsize=(12, 6))
+    plt.plot(w, magnitude_response, style.color)
+    plt.xlabel('Analog frequency $\Omega$ [radians / second]')
+    plt.margins(0, 0.1)
+    plt.grid(which='both', axis='both')
+    plt.xticks([1, 5], ['1', '5'])
+    plt.text(w[-1], magnitude_response[-1] - 0.18, r'$\rightarrow \infty$', ha='center')
+    plt.ylabel('Magnitude')
+    plt.yticks([0, 0.5, 0.707, 1], ['0', '0.5', r'$\frac{1}{\sqrt{2}}$', '1'])
+    plt.margins(0, 0.1)
+    ax = plt.gca()
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    save(output_path, '_analog_magnitude_response')
+    plt.close()
