@@ -8,6 +8,8 @@ from matplotlib.patches import Circle
 import style
 import scipy.signal as signal
 
+from signals import amplitude2db
+
 
 class PlotPeriodCommand:
     def __init__(self, period_start, period_length, arrows_y=1.2):
@@ -563,4 +565,28 @@ def plot_analog_magnitude_response_and_save(b, a, output_path):
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     save(output_path, '_analog_magnitude_response')
+    plt.close()
+
+
+def plot_analog_magnitude_responses_in_db_and_save(b_array, a_array, output_path, legend, ylim):
+    plt.figure(figsize=(12, 6))
+    for b, a, color in zip(b_array, a_array, style.color_palette[:len(b_array)]):
+        w, h = signal.freqs(b, a, worN=2000)
+        magnitude_response = amplitude2db(np.abs(h))
+        plt.plot(w, magnitude_response, color, lw=2)
+    plt.text(w[-1], ylim[0] - 3, r'$\rightarrow \infty$', ha='center')
+    plt.xlabel('Analog frequency $\Omega$ [radians / second]')
+    plt.grid(which='both', axis='both')
+    plt.xticks([1, 5], ['1', '5'])
+    plt.ylabel('Magnitude [dB]')
+    yticks = [level for level in range(-60, ylim[1], 10)]
+    yticks.append(-3)
+    plt.yticks(yticks)
+    plt.margins(0, 1)
+    plt.legend(legend, loc='upper right')
+    ax = plt.gca()
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    plt.ylim(ylim)
+    save(output_path, '_analog_magnitude_response_db')
     plt.close()
