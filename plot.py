@@ -541,6 +541,9 @@ def plot_on_unit_circle_in_3d_and_save(two_sided_magnitude_spectrum, output_path
 
 
 def stem_impulse_response_and_save(b, a, output_path):
+    while len(a) < len(b):
+        a.append(0)
+
     system = signal.dlti(b, a)
     t, ir = signal.dimpulse(system, n=30)
     ir = np.squeeze(ir)
