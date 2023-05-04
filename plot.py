@@ -8,7 +8,7 @@ from matplotlib.patches import Circle
 import style
 import scipy.signal as signal
 
-from signals import amplitude2db
+from signals import amplitude2db, OCTAVE_BANDS, OCTAVE_BANDS_LABELS, zero_pad
 
 
 class PlotPeriodCommand:
@@ -541,8 +541,9 @@ def plot_on_unit_circle_in_3d_and_save(two_sided_magnitude_spectrum, output_path
 
 
 def stem_impulse_response_and_save(b, a, output_path):
-    while len(a) < len(b):
-        a.append(0)
+    a = np.asarray(a)
+    if len(a) < len(b):
+        a = zero_pad(a, len(b) - len(a))
 
     system = signal.dlti(b, a)
     t, ir = signal.dimpulse(system, n=30)
@@ -592,4 +593,36 @@ def plot_analog_magnitude_responses_in_db_and_save(b_array, a_array, output_path
     ax.spines['right'].set_visible(False)
     plt.ylim(ylim)
     save(output_path, '_analog_magnitude_response_db')
+    plt.close()
+
+
+def plot_magnitude_responses_and_save(b_array, a_array, sampling_rate, output_path, legend,
+                                      ylim=None, yticks=None, yticklabels=None):
+    ylabel = 'Magnitude'
+
+    if ylim is None:
+        ylim = [-0.05, 1.1]
+
+    if yticks is None:
+        yticks = [0, 0.5, 1 / np.sqrt(2), 1]
+        yticklabels = ['$0$', '$0.5$', r'$\frac{1}{\sqrt{2}}$', '$1$']
+
+    plt.figure(figsize=(12, 6))
+    for b, a, color in zip(b_array, a_array, style.color_palette[:len(b_array)]):
+        w, h = signal.freqz(b, a, fs=sampling_rate)
+        magnitude_response = np.abs(h)
+        plt.semilogx(w, magnitude_response, color, lw=3)
+    plt.ylim(ylim)
+    plt.xlabel('Frequency [Hz]')
+    plt.margins(0, 0.1)
+    plt.grid(which='both', axis='both')
+    plt.xticks(OCTAVE_BANDS, OCTAVE_BANDS_LABELS)
+    plt.yticks(yticks, yticklabels)
+    plt.ylabel(ylabel)
+    plt.legend(legend)
+    ax = plt.gca()
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    save(output_path, '_magnitude_response')
     plt.close()
