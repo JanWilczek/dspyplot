@@ -108,12 +108,12 @@ def stem_signal_and_save(signal, output_path: Path, show_xticks=False, yticks=No
 
 
 def stem_signals_and_save(signal1, signal2, output_path: Path, signal1_alpha=1.0,
-                          signal2_alpha=1.0):
+                          signal2_alpha=1.0, signal1_color=style.color, signal2_color=style.color):
     samples_count = signal1.shape[0]
 
     plt.figure(figsize=(12, 6))
-    _stem(signal1, alpha=signal1_alpha)
-    _stem(signal2, alpha=signal2_alpha)
+    _stem(signal1, alpha=signal1_alpha, color=signal1_color)
+    _stem(signal2, alpha=signal2_alpha, color=signal2_color)
     plt.yticks([-1, 0, 1])
     plt.xticks([])
     xlim = [-0.5, samples_count - 0.5]
