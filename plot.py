@@ -395,7 +395,7 @@ def plot_phase_response_and_save(b, a, output_path, yticks=None, ytick_labels=No
     plt.close()
 
 
-def plot_group_delay_and_save(b, a, output_path):
+def plot_group_delay_and_save(b, a, output_path, ylim):
     """b, a have their meaning from scipy.signal, see scipy.signal.butter"""
     w, gd = signal.group_delay((b, a))
 
@@ -408,6 +408,8 @@ def plot_group_delay_and_save(b, a, output_path):
     ticks = np.array([0, np.pi / 4, np.pi / 2, 3 * np.pi / 4, np.pi])
     plt.xticks(ticks,
                ['$0$', r'$\frac{\pi}{4}$', r'$\frac{\pi}{2}$', r'$\frac{3\pi}{4}$', r'$\pi$'])
+    if ylim is not None:
+        plt.ylim(ylim)
     ax = plt.gca()
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
