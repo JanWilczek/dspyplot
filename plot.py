@@ -547,6 +547,10 @@ def stem_impulse_response_and_save(b, a, output_path):
     if len(a) < len(b):
         a = zero_pad(a, len(b) - len(a))
 
+    b = np.asarray(b)
+    if len(b) < len(a):
+        b = zero_pad(b, len(a) - len(b))
+
     system = signal.dlti(b, a)
     t, ir = signal.dimpulse(system, n=30)
     ir = np.squeeze(ir)
