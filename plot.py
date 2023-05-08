@@ -632,3 +632,25 @@ def plot_magnitude_responses_and_save(b_array, a_array, sampling_rate, output_pa
 
     save(output_path, '_magnitude_response')
     plt.close()
+
+
+def plot_digital_magnitude_responses_and_save(b_array, a_array, output_path, legend):
+    plt.figure(figsize=(12, 6))
+    for b, a, color in zip(b_array, a_array, style.color_palette[:len(b_array)]):
+        w, h = signal.freqz(b, a, fs=1, worN=2000)
+        magnitude_response = np.abs(h)
+        plt.plot(w, magnitude_response, color, lw=3)
+    plt.xlabel('Normalized digital frequency [cycles / sample]')
+    plt.margins(0, 0.1)
+    plt.xlim([0, 0.5])
+    plt.grid(which='both', axis='both')
+    plt.ylabel('Magnitude')
+    if legend is not None:
+        plt.legend(legend)
+    plt.xticks(np.arange(0, 0.51, 0.1), [0, 0.1, 0.2, 0.3, 0.4, '$f_{Nyquist}$'])
+    ax = plt.gca()
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+
+    save(output_path, '_magnitude_response')
+    plt.close()
