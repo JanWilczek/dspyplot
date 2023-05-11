@@ -634,7 +634,7 @@ def plot_magnitude_responses_and_save(b_array, a_array, sampling_rate, output_pa
     plt.close()
 
 
-def plot_digital_magnitude_responses_and_save(b_array, a_array, output_path, legend):
+def plot_digital_magnitude_responses_and_save(b_array, a_array, output_path, legend, ylim=None):
     plt.figure(figsize=(12, 6))
     for b, a, color in zip(b_array, a_array, style.color_palette[:len(b_array)]):
         w, h = signal.freqz(b, a, fs=1, worN=2000)
@@ -647,6 +647,8 @@ def plot_digital_magnitude_responses_and_save(b_array, a_array, output_path, leg
     plt.ylabel('Magnitude')
     if legend is not None:
         plt.legend(legend)
+    if ylim is not None:
+        plt.ylim(ylim)
     plt.xticks(np.arange(0, 0.51, 0.1), [0, 0.1, 0.2, 0.3, 0.4, '$f_{Nyquist}$'])
     ax = plt.gca()
     ax.spines['top'].set_visible(False)
