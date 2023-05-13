@@ -94,3 +94,22 @@ def db2amplitude(db):
 
 def amplitude2db(amplitude):
     return 20 * np.log10(np.maximum(amplitude, 1e-6))
+
+
+class UniversalCombFilter:
+    def __init__(self, delay: int, blend: float, feedback: float, feedforward: float,
+                 name: str = ''):
+        self.delay = delay
+        self.blend = blend
+        self.feedback = feedback
+        self.feedforward = feedforward
+        self.name = name
+
+    def ba(self):
+        b = np.zeros((self.delay + 1,))
+        a = np.zeros((self.delay + 1,))
+        b[0] = self.blend
+        b[self.delay] = self.feedforward
+        a[0] = 1
+        a[self.delay] = - self.feedback
+        return b, a
