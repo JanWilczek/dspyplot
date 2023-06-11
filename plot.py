@@ -138,8 +138,8 @@ def stem_spectrum_and_save(magnitude_spectrum, output_path: Path, bin_indices=No
     plt.yticks(yticks, ytick_labels)
     plt.xticks(xticks)
     if bin_indices is None:
-        plt.xlim([0, magnitude_spectrum.shape[0]])
-        plt.hlines(0, 0, magnitude_spectrum.shape[0], colors='k')
+        plt.xlim([-0.1, magnitude_spectrum.shape[0]])
+        plt.hlines(0, -0.1, magnitude_spectrum.shape[0], colors='k')
     else:
         xlim = [bin_indices[0]*1.1, bin_indices[-1]*1.1]
         plt.xlim(xlim)
