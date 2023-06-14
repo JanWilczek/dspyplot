@@ -22,6 +22,11 @@ def apply_fade(signal, fade_length):
     return signal
 
 
+def delay_signal(signal, delay):
+    delayed_signal = np.concatenate((np.zeros((delay,)), signal))
+    return delayed_signal
+
+
 def generate_sine(frequency_hz, length_seconds, sampling_rate, fade_length=100,
                   initial_phase_radians=0):
     time = time_vector(length_seconds, sampling_rate)

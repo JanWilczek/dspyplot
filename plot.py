@@ -74,18 +74,26 @@ def _stem(points, bin_indices=None, alpha=1.0, color=style.color):
     plt.setp(baseline, visible=False)
 
 
-def stem_signal_and_save(signal, output_path: Path, show_xticks=False, yticks=None, xticks=None,
+def stem_signal_and_save(signal_to_stem, output_path: Path, show_xticks=False, yticks=None, xticks=None,
                          bin_indices=None, xtick_labels=None):
-    samples_count = signal.shape[0]
-
     plt.figure(figsize=(12, 6))
-    _stem(signal, bin_indices)
+
+    stem_signal(signal_to_stem, show_xticks, xticks, xtick_labels, yticks, bin_indices)
+
+    save_signal(output_path)
+    plt.close()
+
+
+def stem_signal(signal_to_stem, show_xticks=False, xticks=None, xtick_labels=None, yticks=None,
+                bin_indices=None):
+    samples_count = signal_to_stem.shape[0]
+    _stem(signal_to_stem, bin_indices)
     if yticks is None:
         plt.yticks([-1, 0, 1])
     else:
         plt.yticks(yticks)
         ylim_multiplier = 1.1
-        plt.ylim([ylim_multiplier*yticks[0], ylim_multiplier*yticks[-1]])
+        plt.ylim([ylim_multiplier * yticks[0], ylim_multiplier * yticks[-1]])
     if not show_xticks:
         plt.xticks([])
     if xticks is not None:
@@ -103,15 +111,19 @@ def stem_signal_and_save(signal, output_path: Path, show_xticks=False, yticks=No
     ax.spines['right'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
 
+
+def stem_signals_and_save(signal1, signal2, output_path: Path, signal1_alpha=1.0,
+                          signal2_alpha=1.0, signal1_color=style.color, signal2_color=style.color):
+
+    plt.figure(figsize=(12, 6))
+    stem_signals(signal1, signal2, signal1_alpha, signal2_alpha, signal1_color, signal2_color)
+
     save_signal(output_path)
     plt.close()
 
 
-def stem_signals_and_save(signal1, signal2, output_path: Path, signal1_alpha=1.0,
-                          signal2_alpha=1.0, signal1_color=style.color, signal2_color=style.color):
+def stem_signals(signal1, signal2, signal1_alpha=1.0, signal2_alpha=1.0, signal1_color=style.color, signal2_color=style.color):
     samples_count = signal1.shape[0]
-
-    plt.figure(figsize=(12, 6))
     _stem(signal1, alpha=signal1_alpha, color=signal1_color)
     _stem(signal2, alpha=signal2_alpha, color=signal2_color)
     plt.yticks([-1, 0, 1])
@@ -125,9 +137,6 @@ def stem_signals_and_save(signal1, signal2, output_path: Path, signal1_alpha=1.0
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
-
-    save_signal(output_path)
-    plt.close()
 
 
 def stem_spectrum_and_save(magnitude_spectrum, output_path: Path, bin_indices=None,
