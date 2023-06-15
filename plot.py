@@ -28,7 +28,7 @@ class PlotPeriodCommand:
         plt.vlines(self.period_end, 0, self.arrow_y, **self.vlines_style)
         plt.arrow(self.period_start, self.arrow_y, self.period_length, 0, **self.arrow_style)
         plt.arrow(self.period_end, self.arrow_y, -self.period_length, 0, **self.arrow_style)
-        plt.text(self.label_x, self.label_y, self.label_text)
+        plt.text(self.label_x, self.label_y, self.label_text, horizontalalignment='center')
 
 
 def prepare_output_path(path, stem_suffix: str):
