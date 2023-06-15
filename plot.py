@@ -12,22 +12,23 @@ from signals import amplitude2db, OCTAVE_BANDS, OCTAVE_BANDS_LABELS, zero_pad
 
 
 class PlotPeriodCommand:
-    def __init__(self, period_start, period_length, arrows_y=1.2):
+    def __init__(self, period_start, period_length, arrows_y=1.2, label_text='$T$'):
         self.vlines_style = dict(linestyle='--', color='grey')
-        self.arrow_style = dict(length_includes_head=True, head_width=0.04, head_length=0.03, color='k')
+        self.arrow_style = dict(length_includes_head=True, head_width=0.04, head_length=0.03, color='k', zorder=2.5)
         self.period_start = period_start
         self.period_length = period_length
         self.period_end = self.period_start + self.period_length
         self.arrow_y = arrows_y
         self.label_x = np.mean([self.period_start, self.period_end])
         self.label_y = self.arrow_y * 1.1
+        self.label_text = label_text
 
     def __call__(self):
         plt.vlines(self.period_start, 0, self.arrow_y, **self.vlines_style)
         plt.vlines(self.period_end, 0, self.arrow_y, **self.vlines_style)
         plt.arrow(self.period_start, self.arrow_y, self.period_length, 0, **self.arrow_style)
         plt.arrow(self.period_end, self.arrow_y, -self.period_length, 0, **self.arrow_style)
-        plt.text(self.label_x, self.label_y, '$T$')
+        plt.text(self.label_x, self.label_y, self.label_text)
 
 
 def prepare_output_path(path, stem_suffix: str):
