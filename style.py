@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 
 stem_params = {'linefmt': 'C0-', 'markerfmt': 'C0o', 'basefmt': 'k'}
 rc('font', **{'family': 'sans-serif', 'sans-serif': ['Verdana']})
-plt.rcParams.update({'font.size': 20})
+fontsize = 20
+plt.rcParams.update({'font.size': fontsize})
 color = '#Ef7600'
 complementary_color_1 = '#0008ef'
 complementary_color_2 = '#7400ef'
