@@ -613,7 +613,7 @@ def plot_analog_magnitude_responses_in_db_and_save(b_array, a_array, output_path
 
 
 def plot_magnitude_responses_and_save(b_array, a_array, sampling_rate, output_path, legend,
-                                      ylim=None, yticks=None, yticklabels=None):
+                                      ylim=None, yticks=None, yticklabels=None, xlim=None):
     ylabel = 'Magnitude'
 
     if ylim is None:
@@ -625,7 +625,7 @@ def plot_magnitude_responses_and_save(b_array, a_array, sampling_rate, output_pa
 
     plt.figure(figsize=(12, 6))
     for b, a, color in zip(b_array, a_array, style.color_palette[:len(b_array)]):
-        w, h = signal.freqz(b, a, fs=sampling_rate)
+        w, h = signal.freqz(b, a, fs=sampling_rate, worN=2048)
         magnitude_response = np.abs(h)
         plt.semilogx(w, magnitude_response, color, lw=3)
     plt.ylim(ylim)
@@ -633,6 +633,8 @@ def plot_magnitude_responses_and_save(b_array, a_array, sampling_rate, output_pa
     plt.margins(0, 0.1)
     plt.grid(which='both', axis='both')
     plt.xticks(OCTAVE_BANDS, OCTAVE_BANDS_LABELS)
+    if xlim is not None:
+        plt.xlim(xlim)
     plt.yticks(yticks, yticklabels)
     plt.ylabel(ylabel)
     plt.legend(legend)
