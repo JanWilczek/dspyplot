@@ -3,11 +3,11 @@ import numpy as np
 
 def butter(cutoff_frequency_hz, sampling_rate, q, normalized=False):
     """
-    Calculate the numerator and denominator coeffcients of the 2nd-order Butterworth lowpass
+    Calculates the numerator and denominator coeffcients of the 2nd-order Butterworth lowpass
     based on manual digitization via the bilinear transformation.
-    :param cutoff_frequency_hz:
-    :param sampling_rate:
-    :param q:
+    :param cutoff_frequency_hz: cutoff frequency of the filter in hertz
+    :param sampling_rate: sampling rate in hertz
+    :param q: the Q-factor of the filter
     :param normalized: if True, then filter coefficients will be normalized by a0 so that a0 = 1.
     :return: b, a numerator and denominator coefficients respectively of a digital transfer function
     (see scipy.signal.butter for 'ba' output)
