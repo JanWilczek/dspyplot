@@ -142,18 +142,20 @@ def stem_signals(signal1, signal2, signal1_alpha=1.0, signal2_alpha=1.0, signal1
 
 def stem_spectrum_and_save(magnitude_spectrum, output_path: Path, bin_indices=None,
                            yticks=None, ytick_labels=None, ylabel='magnitude',
-                           xlabel='frequency bin index $k$', xticks=None):
+                           xlabel='frequency bin index $k$', xticks=None, xlim=None):
     plt.figure(figsize=(12, 6))
     _stem(magnitude_spectrum, bin_indices)
     plt.yticks(yticks, ytick_labels)
     plt.xticks(xticks)
     if bin_indices is None:
-        plt.xlim([-0.1, magnitude_spectrum.shape[0]])
+        if xlim is None:
+            xlim = [-0.1, magnitude_spectrum.shape[0]]
         plt.hlines(0, -0.1, magnitude_spectrum.shape[0], colors='k')
     else:
-        xlim = [bin_indices[0]*1.1, bin_indices[-1]*1.1]
-        plt.xlim(xlim)
+        if xlim is None:
+            xlim = [bin_indices[0]*0.9, bin_indices[-1]*1.1]
         plt.hlines(0, *xlim, colors='k')
+    plt.xlim(xlim)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     ax = plt.gca()
