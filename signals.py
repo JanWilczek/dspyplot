@@ -93,6 +93,14 @@ def generate_two_sines_two_pulses(sampling_rate):
     return time, signal
 
 
+def generate_farina_sweep(from_digital_frequency, to_digital_frequency, duration_in_samples):
+    amplitude = 1.0
+    factor = 2 * np.pi * from_digital_frequency * duration_in_samples / np.log(to_digital_frequency / from_digital_frequency)
+    exponent = np.log(to_digital_frequency / from_digital_frequency) / duration_in_samples
+    farina_sweep = amplitude * np.sin(factor * (np.exp(np.arange(0, duration_in_samples) * exponent - 1)))
+    return farina_sweep
+
+
 def db2amplitude(db):
     return np.power(10, db / 20)
 
