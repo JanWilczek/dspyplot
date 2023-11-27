@@ -215,8 +215,8 @@ def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, frequencies=No
             xlim = [0, magnitude_spectrum.shape[0]]
         plt.xlim(xlim)
         plt.xlabel('frequency')
-        plt.xticks(xticks, xtick_labels)
         plt.hlines(0, 0, magnitude_spectrum.shape[0], colors='k')
+    plt.xticks(xticks, xtick_labels)
     plt.yticks([])
     plt.ylabel('magnitude')
     ax = plt.gca()
