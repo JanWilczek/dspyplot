@@ -32,7 +32,11 @@ class PlotPeriodCommand:
 
 
 def prepare_output_path(path, stem_suffix: str):
-    return path.with_name(path.stem + stem_suffix + style.img_file_suffix)
+    # append suffix first, in case the original does not have one
+    # (if it has, this call has no effect)
+    path = path.with_suffix(style.img_file_suffix)
+
+    return path.with_stem(path.stem + stem_suffix)
 
 
 def save(output_path, suffix=''):
