@@ -12,9 +12,9 @@ from signals import amplitude2db, OCTAVE_BANDS, OCTAVE_BANDS_LABELS, zero_pad
 
 
 class PlotPeriodCommand:
-    def __init__(self, period_start, period_length, arrows_y=1.2, label_text='$T$'):
+    def __init__(self, period_start, period_length, arrows_y=1.2, label_text='$T$', head_width=0.04, head_length=0.03):
         self.vlines_style = dict(linestyle='--', color='grey')
-        self.arrow_style = dict(length_includes_head=True, head_width=0.04, head_length=0.03, color='k', zorder=2.5)
+        self.arrow_style = dict(length_includes_head=True, head_width=head_width, head_length=head_length, color='k', zorder=2.5)
         self.period_start = period_start
         self.period_length = period_length
         self.period_end = self.period_start + self.period_length
