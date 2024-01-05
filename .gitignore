@@ -3,3 +3,8 @@ img
 data
 .idea
 .vscode
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
