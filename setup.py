@@ -3,6 +3,14 @@ from setuptools import setup, find_packages
 setup(
     name='dspyplot',
     version='0.1',
+    install_requires=[
+        'scipy',
+        'numpy',
+        'matplotlib',
+        'librosa',
+        'pathlib',
+        'SoundFile',
+    ],
     packages=find_packages(),
     description='A library for plotting digital signal processing data.'
                 ' Removes a lot of boilerplate from DSP code. '
