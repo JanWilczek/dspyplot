@@ -9,7 +9,6 @@ setup(
         'matplotlib',
         'librosa',
         'pathlib',
-        'SoundFile',
     ],
     packages=find_packages(),
     description='A library for plotting digital signal processing data.'
