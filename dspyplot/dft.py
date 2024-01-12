@@ -6,6 +6,10 @@ def dft(signal):
     return np.fft.rfft(signal)
 
 
+def idft(spectrum):
+    return np.fft.ifft(spectrum)
+
+
 def magnitude_spectrum(signal):
     return np.abs(dft(signal))
 

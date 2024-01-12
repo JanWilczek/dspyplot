@@ -5,10 +5,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 
-import style
+from . import style
 import scipy.signal as signal
 
-from signals import amplitude2db, OCTAVE_BANDS, OCTAVE_BANDS_LABELS, zero_pad
+from .signals import amplitude2db, OCTAVE_BANDS, OCTAVE_BANDS_LABELS, zero_pad
 
 
 class PlotPeriodCommand:
