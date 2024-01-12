@@ -3,7 +3,7 @@ import librosa
 import librosa.display
 import numpy as np
 import matplotlib.pyplot as plt
-from plot import save, frequency_ticks
+from .plot import save, frequency_ticks
 
 
 def plot_spectrogram_and_save(signal, fs, output_path: Path, fft_size=2048, hop_size=None,
