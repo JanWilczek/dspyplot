@@ -8,3 +8,4 @@ data
 *.pyd
 *.egg-info/
 dist/
+build/
