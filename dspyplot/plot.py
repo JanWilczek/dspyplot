@@ -203,6 +203,34 @@ def plot_signal_and_save(signal, output_path: Path, time=None, ylim=None, extra_
     plt.close()
 
 
+def plot_signals_and_save(signals: list, output_path: Path, signal_styles=None):
+
+    if signal_styles is None:
+        signal_styles = [dict(color=style.color, linestyle='-') for _ in signals]
+
+    plt.figure(figsize=(12, 6))
+    for signal, signal_style in zip(signals, signal_styles):
+        plt.plot(signal, **signal_style)
+        plt.xlabel('time')
+        samples_count = signal.shape[0]
+        xlim = [0, samples_count]
+        plt.xlim(xlim)
+    plt.xticks([])
+    plt.yticks([-1, 0, 1])
+    plt.ylabel('amplitude')
+
+    ax = plt.gca()
+    xlim = ax.get_xlim()
+    plt.hlines(0, xlim[0], xlim[1], 'k')
+
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['bottom'].set_visible(False)
+
+    save_signal(output_path)
+    plt.close()
+
+
 def plot_spectrum_and_save(magnitude_spectrum, output_path: Path, frequencies=None, xticks=None,
                            xtick_labels=None, xlim=None, extra_command=None):
     plt.figure(figsize=(12, 6))
