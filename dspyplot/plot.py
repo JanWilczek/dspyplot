@@ -171,8 +171,12 @@ def stem_spectrum_and_save(magnitude_spectrum, output_path: Path, bin_indices=No
     plt.close()
 
 
-def plot_signal_and_save(signal, output_path: Path, time=None, ylim=None, extra_command=None):
+def plot_signal_and_save(signal, output_path: Path, time=None, ylim=None, extra_command=None, yticks=None):
     samples_count = signal.shape[0]
+
+    if yticks is None:
+        yticks = [-1, 0, 1] 
+
 
     plt.figure(figsize=(12, 6))
     if time is not None:
@@ -186,7 +190,7 @@ def plot_signal_and_save(signal, output_path: Path, time=None, ylim=None, extra_
         xlim = [0, samples_count]
         plt.xlim(xlim)
         plt.xticks([])
-    plt.yticks([-1, 0, 1])
+    plt.yticks(yticks)
     plt.ylabel('amplitude')
     plt.hlines(0, xlim[0], xlim[1], 'k')
     if ylim is not None:
@@ -203,10 +207,13 @@ def plot_signal_and_save(signal, output_path: Path, time=None, ylim=None, extra_
     plt.close()
 
 
-def plot_signals_and_save(signals: list, output_path: Path, signal_styles=None):
+def plot_signals_and_save(signals: list, output_path: Path, signal_styles=None, yticks=None):
 
     if signal_styles is None:
         signal_styles = [dict(color=style.color, linestyle='-') for _ in signals]
+
+    if yticks is None:
+        yticks = [-1, 0, 1] 
 
     plt.figure(figsize=(12, 6))
     for signal, signal_style in zip(signals, signal_styles):
@@ -216,7 +223,7 @@ def plot_signals_and_save(signals: list, output_path: Path, signal_styles=None):
         xlim = [0, samples_count]
         plt.xlim(xlim)
     plt.xticks([])
-    plt.yticks([-1, 0, 1])
+    plt.yticks(yticks)
     plt.ylabel('amplitude')
 
     ax = plt.gca()
