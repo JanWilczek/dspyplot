@@ -42,9 +42,9 @@ def time_vector(length_seconds, sampling_rate):
     return time
 
 
-def generate_signal(frequency_hz, length_seconds, sampling_rate, fade_length, generator):
+def generate_signal(frequency_hz, length_seconds, sampling_rate, fade_length, generator, **kwargs):
     time = time_vector(length_seconds, sampling_rate)
-    signal = generator(frequency_hz, time)
+    signal = generator(frequency_hz, time, **kwargs)
     signal = apply_fade(signal, fade_length)
     return signal
 
@@ -57,6 +57,14 @@ def generate_sawtooth(frequency_hz, length_seconds, sampling_rate, fade_length=1
     return generate_signal(frequency_hz, length_seconds, sampling_rate, fade_length, sawtooth)
 
 
+def generate_square(frequency_hz, length_seconds, sampling_rate, fade_length=100, harmonics_count=13):
+    return generate_signal(frequency_hz, length_seconds, sampling_rate, fade_length, square, harmonics_count=harmonics_count)
+
+
+def generate_pulse(frequency_hz, length_seconds, sampling_rate, fade_length=100, duty_cycle=0.2, harmonics_count=14):
+    return generate_signal(frequency_hz, length_seconds, sampling_rate, fade_length, pulse, duty_cycle=duty_cycle, harmonics_count=harmonics_count)
+
+
 def triangle(frequency_hz, time):
     return 4 * np.abs(frequency_hz * time - np.floor(frequency_hz * time + 0.5)) - 1
 
@@ -64,6 +72,23 @@ def triangle(frequency_hz, time):
 def sawtooth(frequency_hz, time):
     period = 1 / frequency_hz
     return 2 * (time % period) * frequency_hz - 1
+
+
+def square(frequency_hz, time, harmonics_count=13):
+    phase = 2 * np.pi * frequency_hz * time
+    harmonics_count = harmonics_count // 2
+    waveform = np.zeros_like(phase)
+    for k in range(1, harmonics_count + 1):
+        waveform += 4 / np.pi * (2 * k - 1) ** -1 * np.sin((2 * k - 1) * phase)
+    return waveform
+
+
+def pulse(frequency_hz, time, duty_cycle=0.2, harmonics_count=14):
+    phase = 2 * np.pi * frequency_hz * time
+    waveform = (2 * duty_cycle - 1) * np.ones_like(phase)
+    for k in range(1, harmonics_count + 1):
+        waveform += 4 / (k * np.pi) * np.sin(np.pi * k * duty_cycle) * np.cos(k * phase - np.pi * k * duty_cycle)
+    return waveform
 
 
 def generate_noise(length_samples, fade_length=0):
