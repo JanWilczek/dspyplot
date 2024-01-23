@@ -114,6 +114,18 @@ def zero_pad(signal, zeros_count):
     return np.concatenate((signal, np.zeros((zeros_count,))))
 
 
+def pad_shorter_with_zeros(signal1, signal2):
+    zeros_count = np.abs(signal1.shape[0] - signal2.shape[0])
+
+    if zeros_count == 0:
+        return signal1, signal2
+
+    if signal1.shape[0] < signal2.shape[0]:
+        return zero_pad(signal1, zeros_count), signal2
+
+    return signal1, zero_pad(signal2)
+
+
 def normalize_to_peak(signal):
     return signal / np.amax(np.abs(signal))
 
