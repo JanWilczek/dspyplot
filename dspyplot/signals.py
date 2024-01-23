@@ -160,6 +160,13 @@ def db2amplitude(db):
     return np.power(10, db / 20)
 
 
+def db2amplitude_with_reference(db, db_zero=-60):
+    if db <= db_zero:
+        return 0
+
+    return 10 ** (db / 20)
+
+
 def amplitude2db(amplitude):
     return 20 * np.log10(np.maximum(amplitude, 1e-6))
 
