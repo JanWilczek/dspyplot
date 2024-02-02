@@ -716,4 +716,3 @@ def print_signal(signal):
     joined = ', '.join(stringified)
     surrounded = '[' + joined + ']'
     print(surrounded)
-
