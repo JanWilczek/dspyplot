@@ -9,3 +9,6 @@ data
 *.egg-info/
 dist/
 build/
+node_modules/
+test_output/
+
