@@ -3,3 +3,6 @@ numpy~=1.21.1
 matplotlib~=3.8.2
 librosa>=0.8.0
 pathlib~=1.0.1
+SoundFile
+pyloudnorm
+

@@ -9,6 +9,8 @@ setup(
         'matplotlib',
         'librosa',
         'pathlib',
+        'SoundFile',
+        'pyloudnorm'
     ],
     packages=find_packages(),
     description='A library for plotting digital signal processing data.'

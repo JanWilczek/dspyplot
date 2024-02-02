@@ -1,5 +1,7 @@
 import scipy.signal as sig
 import numpy as np
+import pyloudnorm as pyln
+
 
 OCTAVE_BANDS = np.asarray([63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000])
 OCTAVE_BANDS_LABELS = [str(f) for f in OCTAVE_BANDS]
@@ -128,6 +130,13 @@ def pad_shorter_with_zeros(signal1, signal2):
 
 def normalize_to_peak(signal):
     return signal / np.amax(np.abs(signal))
+
+
+def normalize_for_listening(signal, sample_rate):
+    TARGET_LEVEL_LUFS = -16 # used by Spotify, Apple Music, and YouTube
+    meter = pyln.Meter(sample_rate)
+    loudness = meter.integrated_loudness(signal)
+    return pyln.normalize.loudness(signal, loudness, TARGET_LEVEL_LUFS)
 
 
 def generate_two_sines_two_pulses(sampling_rate):
