@@ -12,7 +12,7 @@ def _preprocess(signal, sample_rate: float):
     return signal
 
 
-def save_audio_file_with_normalization(signal, sample_rate: float, output_path: Path):
+def save_audio_file_with_normalization(output_path: Path, signal, sample_rate: float):
     preprocessed_signal = _preprocess(np.copy(signal), sample_rate)
 
     if np.any(np.abs(preprocessed_signal) >= 1):
