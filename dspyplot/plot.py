@@ -711,8 +711,12 @@ def plot_digital_magnitude_responses_and_save(b_array, a_array, output_path, leg
     plt.close()
 
 
+def strip_zeros(string: str):
+    return string.rstrip('0').rstrip('.') if '.' in string else string
+
+
 def print_signal(signal):
-    stringified = [f'{signal[i]:.3f}' for i in range(0, len(signal))]
+    stringified = [strip_zeros(f'{signal[i]:.3f}') for i in range(0, len(signal))]
     joined = ', '.join(stringified)
     surrounded = '[' + joined + ']'
     print(surrounded)
