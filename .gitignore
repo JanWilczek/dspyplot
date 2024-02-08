@@ -10,6 +10,7 @@ dist/
 build/
 node_modules/
 test_output/
+venv2/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
