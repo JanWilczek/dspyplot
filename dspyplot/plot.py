@@ -171,14 +171,12 @@ def stem_spectrum_and_save(magnitude_spectrum, output_path: Path, bin_indices=No
     plt.close()
 
 
-def plot_signal_and_save(signal, output_path: Path, time=None, ylim=None, extra_command=None, yticks=None):
+def plot_signal(signal, time=None, ylim=None, extra_command=None, yticks=None):
     samples_count = signal.shape[0]
 
     if yticks is None:
         yticks = [-1, 0, 1] 
 
-
-    plt.figure(figsize=(12, 6))
     if time is not None:
         plt.plot(time, signal, style.color)
         plt.xlabel('time [s]')
@@ -203,6 +201,10 @@ def plot_signal_and_save(signal, output_path: Path, time=None, ylim=None, extra_
     if extra_command is not None:
         extra_command()
 
+
+def plot_signal_and_save(signal, output_path: Path, time=None, ylim=None, extra_command=None, yticks=None):
+    plt.figure(figsize=(12, 6))
+    plot_signal(signal, time, ylim, extra_command, yticks)
     save_signal(output_path)
     plt.close()
 
