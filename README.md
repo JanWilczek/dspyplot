@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/logo.png" width="512px" />
+<img src="docs/logo.png" width="300px" />
 
 # WolfSound's DSPyPlot library for plotting and manipulating signals
 
