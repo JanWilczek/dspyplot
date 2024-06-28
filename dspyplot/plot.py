@@ -99,7 +99,18 @@ def stem_signal_and_save(signal_to_stem, output_path: Path, show_xticks=False, y
 def stem_signal(signal_to_stem, show_xticks=False, xticks=None, xtick_labels=None, yticks=None,
                 bin_indices=None):
     samples_count = signal_to_stem.shape[0]
+
+    if bin_indices is None:
+        xlim = [-0.5, samples_count - 0.5]
+    else:
+        xlim = [np.amin(bin_indices) - 0.5, np.amax(bin_indices) + 1]
+    plt.xlim(xlim)
+
+    # plot the x-axis
+    plt.hlines(0, xlim[0], xlim[-1], colors='k')
+
     stem(signal_to_stem, bin_indices)
+
     if yticks is None:
         plt.yticks([-1, 0, 1])
     else:
@@ -110,12 +121,6 @@ def stem_signal(signal_to_stem, show_xticks=False, xticks=None, xtick_labels=Non
         plt.xticks([])
     if xticks is not None:
         plt.xticks(xticks, xtick_labels)
-    if bin_indices is None:
-        xlim = [-0.5, samples_count - 0.5]
-    else:
-        xlim = [np.amin(bin_indices) - 0.5, np.amax(bin_indices) + 1]
-    plt.xlim(xlim)
-    plt.hlines(0, xlim[0], xlim[-1], colors='k')
     plt.xlabel('sample index $n$')
     plt.ylabel('amplitude')
     ax = plt.gca()
