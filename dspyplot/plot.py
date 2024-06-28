@@ -69,7 +69,14 @@ def frequency_ticks(min_frequency=None, max_frequency=None):
     return xticks, xtick_labels
 
 
-def _stem(points, bin_indices=None, alpha=1.0, color=style.color):
+def remove_frame():
+    ax = plt.gca()
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['bottom'].set_visible(False)
+
+
+def stem(points, bin_indices=None, alpha=1.0, color=style.color):
     if bin_indices is not None:
         markerline, stemlines, baseline = plt.stem(bin_indices, points, **style.stem_params)
     else:
@@ -92,7 +99,7 @@ def stem_signal_and_save(signal_to_stem, output_path: Path, show_xticks=False, y
 def stem_signal(signal_to_stem, show_xticks=False, xticks=None, xtick_labels=None, yticks=None,
                 bin_indices=None):
     samples_count = signal_to_stem.shape[0]
-    _stem(signal_to_stem, bin_indices)
+    stem(signal_to_stem, bin_indices)
     if yticks is None:
         plt.yticks([-1, 0, 1])
     else:
@@ -129,8 +136,8 @@ def stem_signals_and_save(signal1, signal2, output_path: Path, signal1_alpha=1.0
 
 def stem_signals(signal1, signal2, signal1_alpha=1.0, signal2_alpha=1.0, signal1_color=style.color, signal2_color=style.color):
     samples_count = signal1.shape[0]
-    _stem(signal1, alpha=signal1_alpha, color=signal1_color)
-    _stem(signal2, alpha=signal2_alpha, color=signal2_color)
+    stem(signal1, alpha=signal1_alpha, color=signal1_color)
+    stem(signal2, alpha=signal2_alpha, color=signal2_color)
     plt.yticks([-1, 0, 1])
     plt.xticks([])
     xlim = [-0.5, samples_count - 0.5]
@@ -148,7 +155,7 @@ def stem_spectrum_and_save(magnitude_spectrum, output_path: Path, bin_indices=No
                            yticks=None, ytick_labels=None, ylabel='magnitude',
                            xlabel='frequency bin index $k$', xticks=None, xlim=None):
     plt.figure(figsize=(12, 6))
-    _stem(magnitude_spectrum, bin_indices)
+    stem(magnitude_spectrum, bin_indices)
     plt.yticks(yticks, ytick_labels)
     plt.xticks(xticks)
     if bin_indices is None:
