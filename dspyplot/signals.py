@@ -16,7 +16,7 @@ def apply_fade(signal, fade_length):
     if window_length > len(signal):
         raise RuntimeError("signal must be longer than twice the fade_length for the fade to work")
 
-    window = sig.hann(window_length)
+    window = sig.windows.hann(window_length)
 
     signal[:fade_length] *= window[:fade_length]
     signal[-fade_length:] *= window[fade_length:]
