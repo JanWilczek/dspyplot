@@ -10,7 +10,8 @@ setup(
         'librosa',
         'pathlib',
         'SoundFile',
-        'pyloudnorm'
+        'pyloudnorm',
+        'deprecated'
     ],
     packages=find_packages(),
     description='A library for plotting digital signal processing data.'

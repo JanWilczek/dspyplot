@@ -1,4 +1,5 @@
 from pathlib import Path
+from deprecated import deprecated
 
 import matplotlib
 import numpy as np
@@ -667,6 +668,12 @@ def plot_analog_magnitude_responses_in_db_and_save(b_array, a_array, output_path
     plt.close()
 
 
+def plot_digital_magnitude_responses_in_octaves_and_save(b_array, a_array, sampling_rate, output_path, legend,
+                                                         ylim=None, yticks=None, yticklabels=None, xlim=None):
+    plot_magnitude_responses_and_save(b_array, a_array, sampling_rate, output_path, legend, ylim, yticks, yticklabels, xlim)
+
+
+@deprecated(reason="bad naming; use plot_digital_magnitude_responses_in_octaves_and_save() instead")
 def plot_magnitude_responses_and_save(b_array, a_array, sampling_rate, output_path, legend,
                                       ylim=None, yticks=None, yticklabels=None, xlim=None):
     ylabel = 'Magnitude'
