@@ -13,12 +13,12 @@ def butter(cutoff_frequency_hz, sampling_rate, q, normalized=False):
     (see scipy.signal.butter for 'ba' output)
     """
     k = np.tan(np.pi * cutoff_frequency_hz / sampling_rate)
-    b0 = k ** 2
-    b1 = 2 * k ** 2
-    b2 = k ** 2
-    a0 = 1 + k / q + k ** 2
-    a1 = 2 * k ** 2 - 2
-    a2 = 1 - k / q + k ** 2
+    b0 = k**2
+    b1 = 2 * k**2
+    b2 = k**2
+    a0 = 1 + k / q + k**2
+    a1 = 2 * k**2 - 2
+    a2 = 1 - k / q + k**2
 
     b = [b0, b1, b2]
     a = [a0, a1, a2]

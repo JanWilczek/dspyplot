@@ -1,8 +1,1 @@
-__all__ = [
-    "constants",
-    "dft",
-    "plot",
-    "signals",
-    "stft",
-    "style"
-]
+__all__ = ["constants", "dft", "plot", "signals", "stft", "style"]
