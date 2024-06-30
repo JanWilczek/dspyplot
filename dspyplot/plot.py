@@ -769,30 +769,6 @@ def plot_analog_magnitude_responses_in_db_and_save(
     plt.close()
 
 
-def plot_digital_magnitude_responses_in_octaves_and_save(
-    b_array,
-    a_array,
-    sampling_rate,
-    output_path,
-    legend,
-    ylim=None,
-    yticks=None,
-    yticklabels=None,
-    xlim=None,
-):
-    plot_magnitude_responses_and_save(
-        b_array,
-        a_array,
-        sampling_rate,
-        output_path,
-        legend,
-        ylim,
-        yticks,
-        yticklabels,
-        xlim,
-    )
-
-
 @deprecated(
     reason="bad naming; use plot_digital_magnitude_responses_in_octaves_and_save() instead"
 )
@@ -807,19 +783,50 @@ def plot_magnitude_responses_and_save(
     yticklabels=None,
     xlim=None,
 ):
+    plot_digital_magnitude_responses_in_octaves_and_save(
+        b_array,
+        a_array,
+        sampling_rate,
+        output_path,
+        legend,
+        ylim,
+        yticks,
+        yticklabels,
+        xlim,
+    )
+
+
+def plot_digital_magnitude_responses_in_octaves_and_save(
+    b_array,
+    a_array,
+    sampling_rate,
+    output_path,
+    legend,
+    ylim=None,
+    yticks=None,
+    yticklabels=None,
+    xlim=None,
+    db=False,
+):
     ylabel = "Magnitude"
 
     if ylim is None:
         ylim = [-0.05, 1.1]
 
     if yticks is None:
-        yticks = [0, 0.5, 1 / np.sqrt(2), 1]
-        yticklabels = ["$0$", "$0.5$", r"$\frac{1}{\sqrt{2}}$", "$1$"]
+        if db:
+            yticks = np.arange(-60, 21, 10)
+            yticklabels = [str(ytick) for ytick in yticks]
+        else:
+            yticks = [0, 0.5, 1 / np.sqrt(2), 1]
+            yticklabels = ["$0$", "$0.5$", r"$\frac{1}{\sqrt{2}}$", "$1$"]
 
     plt.figure(figsize=(12, 6))
     for b, a, color in zip(b_array, a_array, style.color_palette[: len(b_array)]):
         w, h = signal.freqz(b, a, fs=sampling_rate, worN=2048)
         magnitude_response = np.abs(h)
+        if db:
+            magnitude_response = amplitude2db(magnitude_response)
         plt.semilogx(w, magnitude_response, color, lw=3)
     plt.ylim(ylim)
     plt.xlabel("Frequency [Hz]")
@@ -835,7 +842,10 @@ def plot_magnitude_responses_and_save(
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
 
-    save(output_path, "_magnitude_response")
+    suffix = "_magnitude_response"
+    if db:
+        suffix += "_db"
+    save(output_path, suffix)
     plt.close()
 
 
