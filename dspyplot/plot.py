@@ -806,6 +806,7 @@ def plot_digital_magnitude_responses_in_octaves_and_save(
     yticks=None,
     yticklabels=None,
     xlim=None,
+    xticks=None,
     db=False,
 ):
     ylabel = "Magnitude"
@@ -823,7 +824,7 @@ def plot_digital_magnitude_responses_in_octaves_and_save(
 
     plt.figure(figsize=(12, 6))
     for b, a, color in zip(b_array, a_array, style.color_palette[: len(b_array)]):
-        w, h = signal.freqz(b, a, fs=sampling_rate, worN=2048)
+        w, h = signal.freqz(b, a, fs=sampling_rate, worN=4096)
         magnitude_response = np.abs(h)
         if db:
             magnitude_response = amplitude2db(magnitude_response)
@@ -832,7 +833,11 @@ def plot_digital_magnitude_responses_in_octaves_and_save(
     plt.xlabel("Frequency [Hz]")
     plt.margins(0, 0.1)
     plt.grid(which="both", axis="both")
-    plt.xticks(OCTAVE_BANDS, OCTAVE_BANDS_LABELS)
+    if xticks:
+        xticklabels = [str(xtick) for xtick in xticks]
+        plt.xticks(xticks, xticklabels)
+    else:
+        plt.xticks(OCTAVE_BANDS, OCTAVE_BANDS_LABELS)
     if xlim is not None:
         plt.xlim(xlim)
     plt.yticks(yticks, yticklabels)
