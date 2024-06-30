@@ -270,3 +270,10 @@ class UniversalCombFilter:
         a[0] = 1
         a[self.delay] = -self.feedback
         return b, a
+
+
+def amplitude_suppression_db(input_signal, output_signal):
+    """Calculates how the amplitude of the input changed with respect to the output"""
+    input_amplitude = np.amax(input_signal)
+    output_amplitude = np.amax(output_signal)
+    return amplitude2db(output_amplitude) - amplitude2db(input_amplitude)
