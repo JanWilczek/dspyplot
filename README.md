@@ -16,3 +16,8 @@ To use this library in your project (best in your virtual environment), run
 ```bash
 pip install git+https://github.com/JanWilczek/dspyplot.git#egg=dspyplot
 ```
+
+## 🎈 Contributing
+
+No PRs will be reviewed or merged. If you want to extend/correct the library, fork it.
+
