@@ -224,7 +224,12 @@ def stem_spectrum_and_save(
     plt.figure(figsize=(12, 6))
     stem(magnitude_spectrum, bin_indices)
     plt.yticks(yticks, ytick_labels)
+
+    if xticks is None:
+        xticks = np.arange(magnitude_spectrum.shape[0])
+
     plt.xticks(xticks)
+
     if bin_indices is None:
         if xlim is None:
             xlim = [-0.1, magnitude_spectrum.shape[0]]
