@@ -901,3 +901,15 @@ def print_signal(signal):
     joined = ", ".join(stringified)
     surrounded = "[" + joined + "]"
     print(surrounded)
+
+
+def plot_waveshaping_functions(x, y1, y2, legend=None):
+    ticks = [-1, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1]
+    plot_style = dict(linewidth=3)
+    plt.figure(figsize=(12, 12))
+    plt.plot(x, y1, style.color, **plot_style)
+    plt.plot(x, y2, style.complementary_color_1, linestyle=":", **plot_style)
+    plt.xticks(ticks)
+    plt.yticks(ticks)
+    plt.legend(legend)
+    plt.grid()
