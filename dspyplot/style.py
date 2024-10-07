@@ -27,3 +27,47 @@ color_palette = [
     complementary_color_3,
     grey,
 ]
+color_palette_names = [
+    "color",
+    "complementary_color_1",
+    "triadic_color_1",
+    "tetradic_color_2",
+    "tetradic_color_3",
+    "complementary_color_2",
+    "complementary_color_3",
+    "grey",
+]
+
+
+def plot_color_palette():
+    # Create the plot
+    _, ax = plt.subplots(figsize=(12, 6))
+
+    # Plot each color as a square
+    for i, color in enumerate(color_palette):
+        ax.add_patch(plt.Rectangle((i, 0), 1, 1, color=color))
+
+    # Set limits and labels
+    ax.set_xlim(0, len(color_palette))
+    ax.set_ylim(0, 1)
+    ax.set_xticks(range(len(color_palette)))
+    color_names = [
+        f"{name}:\n{hex}" for name, hex in zip(color_palette_names, color_palette)
+    ]
+    ax.set_xticklabels(color_names, rotation=45, ha="center")
+    ax.set_yticks([])
+
+    # Add a title
+    ax.set_title("WolfSound's color palette")
+    plt.subplots_adjust(bottom=0.45)
+
+    # Show the plot
+    plt.show()
+
+
+def main():
+    plot_color_palette()
+
+
+if __name__ == "__main__":
+    main()

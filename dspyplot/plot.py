@@ -137,6 +137,10 @@ def stem_signal(
     yticks=None,
     bin_indices=None,
 ):
+    """
+    :param bin_indices points on the horizontal axis corresponding to values in signal_to_stem
+           If signal_to_stem is y, then bin_indices is x.
+    """
     samples_count = signal_to_stem.shape[0]
 
     if bin_indices is None:
@@ -160,6 +164,9 @@ def stem_signal(
         plt.xticks([])
     if xticks is not None:
         plt.xticks(xticks, xtick_labels)
+    if not xticks and not bin_indices:
+        xticks = np.arange(signal_to_stem.shape[0])
+        plt.xticks(xticks)
     plt.xlabel("sample index $n$")
     plt.ylabel("amplitude")
     ax = plt.gca()
@@ -225,7 +232,12 @@ def stem_spectrum_and_save(
     plt.figure(figsize=(12, 6))
     stem(magnitude_spectrum, bin_indices)
     plt.yticks(yticks, ytick_labels)
+
+    if xticks is None and bin_indices is None:
+        xticks = np.arange(magnitude_spectrum.shape[0])
+
     plt.xticks(xticks)
+
     if bin_indices is None:
         if xlim is None:
             xlim = [-0.1, magnitude_spectrum.shape[0]]
@@ -897,3 +909,15 @@ def print_signal(signal):
     joined = ", ".join(stringified)
     surrounded = "[" + joined + "]"
     print(surrounded)
+
+
+def plot_waveshaping_functions(x, y1, y2, legend=None):
+    ticks = [-1, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1]
+    plot_style = dict(linewidth=3)
+    plt.figure(figsize=(12, 12))
+    plt.plot(x, y1, style.color, **plot_style)
+    plt.plot(x, y2, style.complementary_color_1, linestyle=":", **plot_style)
+    plt.xticks(ticks)
+    plt.yticks(ticks)
+    plt.legend(legend)
+    plt.grid()

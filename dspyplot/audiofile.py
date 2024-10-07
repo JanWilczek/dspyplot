@@ -7,7 +7,7 @@ import logging as logger
 import pyloudnorm as pyln
 
 
-def _preprocess(signal, sample_rate: float):
+def preprocess(signal, sample_rate: float):
     signal = apply_fade(signal, fade_length=1000)
     signal = normalize_for_listening(signal, sample_rate)
 
