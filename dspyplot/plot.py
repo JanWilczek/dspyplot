@@ -1,5 +1,6 @@
 from pathlib import Path
 from deprecated import deprecated
+import itertools
 
 import matplotlib
 import numpy as np
@@ -698,8 +699,8 @@ def plot_on_unit_circle_in_3d_and_save(
 
     # labels
     ax.text(0.2, 0.5, 0, "$0$", "y")
-    ax.text(-1.5, 0.1, 0, "$\pi/2$", "y")
-    ax.text(-0.2, -1, 0, "$\pi$", "y")
+    ax.text(-1.5, 0.1, 0, r"$\pi/2$", "y")
+    ax.text(-0.2, -1, 0, r"$\pi$", "y")
 
     if zlim is not None:
         ax.set_zlim(zlim)
@@ -728,7 +729,7 @@ def plot_analog_magnitude_response_and_save(b, a, output_path):
     magnitude_response = np.abs(h)
     plt.figure(figsize=(12, 6))
     plt.plot(w, magnitude_response, style.color)
-    plt.xlabel("Analog frequency $\Omega$ [radians / second]")
+    plt.xlabel(r"Analog frequency $\Omega$ [radians / second]")
     plt.margins(0, 0.1)
     plt.grid(which="both", axis="both")
     plt.xticks([1, 5], ["1", "5"])
@@ -752,7 +753,7 @@ def plot_analog_magnitude_responses_in_db_and_save(
         magnitude_response = amplitude2db(np.abs(h))
         plt.plot(w, magnitude_response, color, lw=2)
     plt.text(w[-1], ylim[0] - 3, r"$\rightarrow \infty$", ha="center")
-    plt.xlabel("Analog frequency $\Omega$ [radians / second]")
+    plt.xlabel(r"Analog frequency $\Omega$ [radians / second]")
     plt.grid(which="both", axis="both")
     plt.xticks([1, 5], ["1", "5"])
     plt.ylabel("Magnitude [dB]")
@@ -808,6 +809,7 @@ def plot_digital_magnitude_responses_in_octaves_and_save(
     xlim=None,
     xticks=None,
     db=False,
+    worn=None,
 ):
     ylabel = "Magnitude"
 
@@ -822,9 +824,12 @@ def plot_digital_magnitude_responses_in_octaves_and_save(
             yticks = [0, 0.5, 1 / np.sqrt(2), 1]
             yticklabels = ["$0$", "$0.5$", r"$\frac{1}{\sqrt{2}}$", "$1$"]
 
+    if worn is None:
+        worn = 4096
+
     plt.figure(figsize=(12, 6))
-    for b, a, color in zip(b_array, a_array, style.color_palette[: len(b_array)]):
-        w, h = signal.freqz(b, a, fs=sampling_rate, worN=4096)
+    for b, a, color in zip(b_array, a_array, itertools.cycle(style.color_palette)):
+        w, h = signal.freqz(b, a, fs=sampling_rate, worN=worn)
         magnitude_response = np.abs(h)
         if db:
             magnitude_response = amplitude2db(magnitude_response)
@@ -854,9 +859,7 @@ def plot_digital_magnitude_responses_in_octaves_and_save(
     plt.close()
 
 
-def plot_digital_magnitude_responses_and_save(
-    b_array, a_array, output_path, legend, ylim=None
-):
+def plot_digital_magnitude_responses(b_array, a_array, legend, ylim=None):
     plt.figure(figsize=(12, 6))
     for b, a, color in zip(b_array, a_array, style.color_palette[: len(b_array)]):
         w, h = signal.freqz(b, a, fs=1, worN=2000)
@@ -876,6 +879,11 @@ def plot_digital_magnitude_responses_and_save(
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
 
+
+def plot_digital_magnitude_responses_and_save(
+    b_array, a_array, output_path, legend, ylim=None
+):
+    plot_digital_magnitude_responses_and_save(b_array, a_array, legend, ylim)
     save(output_path, "_magnitude_response")
     plt.close()
 
