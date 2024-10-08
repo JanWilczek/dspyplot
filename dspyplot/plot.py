@@ -163,7 +163,7 @@ def stem_signal(
         plt.xticks([])
     if xticks is not None:
         plt.xticks(xticks, xtick_labels)
-    if not xticks and not bin_indices:
+    if xticks is None and bin_indices is None:
         xticks = np.arange(signal_to_stem.shape[0])
         plt.xticks(xticks)
     plt.xlabel("sample index $n$")
