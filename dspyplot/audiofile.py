@@ -21,7 +21,7 @@ def preprocess(signal, sample_rate: float):
 
 
 def save_audio_file_with_normalization(output_path: Path, signal, sample_rate: float):
-    preprocessed_signal = _preprocess(np.copy(signal), sample_rate)
+    preprocessed_signal = preprocess(np.copy(signal), sample_rate)
 
     if np.any(np.abs(preprocessed_signal) >= 1):
         logger.warning(
