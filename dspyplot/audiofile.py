@@ -32,3 +32,14 @@ def save_audio_file_with_normalization(output_path: Path, signal, sample_rate: f
     output_path = output_path.with_suffix(".flac")
 
     sf.write(output_path, preprocessed_signal, sample_rate)
+
+
+def save_audio_file_without_normalization(
+    output_path: Path, signal, sample_rate: float, format="flac"
+):
+    preprocessed_signal = apply_fade(np.copy(signal), fade_length=1000)
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path = output_path.with_suffix(f".{format}")
+
+    sf.write(output_path, preprocessed_signal, sample_rate)
