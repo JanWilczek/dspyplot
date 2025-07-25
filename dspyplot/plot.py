@@ -258,19 +258,21 @@ def stem_spectrum_and_save(
     plt.close()
 
 
-def plot_signal(signal, time=None, ylim=None, extra_command=None, yticks=None):
+def plot_signal(
+    signal, time=None, ylim=None, extra_command=None, yticks=None, **plot_kwargs
+):
     samples_count = signal.shape[0]
 
     if yticks is None:
         yticks = [-1, 0, 1]
 
     if time is not None:
-        plt.plot(time, signal, style.color)
+        plt.plot(time, signal, style.color, **plot_kwargs)
         plt.xlabel("time [s]")
         xlim = [time[0], time[-1]]
         plt.xlim(xlim)
     else:
-        plt.plot(signal, style.color)
+        plt.plot(signal, style.color, **plot_kwargs)
         plt.xlabel("time")
         xlim = [0, samples_count]
         plt.xlim(xlim)
@@ -290,10 +292,16 @@ def plot_signal(signal, time=None, ylim=None, extra_command=None, yticks=None):
 
 
 def plot_signal_and_save(
-    signal, output_path: Path, time=None, ylim=None, extra_command=None, yticks=None
+    signal,
+    output_path: Path,
+    time=None,
+    ylim=None,
+    extra_command=None,
+    yticks=None,
+    **plot_kwargs,
 ):
     plt.figure(figsize=(12, 6))
-    plot_signal(signal, time, ylim, extra_command, yticks)
+    plot_signal(signal, time, ylim, extra_command, yticks, **plot_kwargs)
     save_signal(output_path)
     plt.close()
 
