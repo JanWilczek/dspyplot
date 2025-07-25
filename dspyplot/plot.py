@@ -267,16 +267,16 @@ def plot_signal(
         yticks = [-1, 0, 1]
 
     if time is not None:
-        plt.plot(time, signal, style.color, **plot_kwargs)
-        plt.xlabel("time [s]")
         xlim = [time[0], time[-1]]
         plt.hlines(0, xlim[0], xlim[1], "k")
+        plt.plot(time, signal, style.color, **plot_kwargs)
+        plt.xlabel("time [s]")
         plt.xlim(xlim)
     else:
-        plt.plot(signal, style.color, **plot_kwargs)
-        plt.xlabel("time")
         xlim = [0, samples_count]
         plt.hlines(0, xlim[0], xlim[1], "k")
+        plt.plot(signal, style.color, **plot_kwargs)
+        plt.xlabel("time")
         plt.xlim(xlim)
         plt.xticks([])
     plt.yticks(yticks)
