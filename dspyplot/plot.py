@@ -308,7 +308,7 @@ def plot_signal_and_save(
 
 
 def plot_signals_and_save(
-    signals: list, output_path: Path, signal_styles=None, yticks=None
+    signals: list, output_path: Path | None, signal_styles=None, yticks=None
 ):
 
     if signal_styles is None:
