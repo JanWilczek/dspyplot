@@ -318,26 +318,27 @@ def plot_signals_and_save(
         yticks = [-1, 0, 1]
 
     plt.figure(figsize=(12, 6))
+    samples_count = signals[0].shape[0]
+    xlim = [0, samples_count]
+    plt.xlim(xlim)
+    plt.hlines(0, xlim[0], xlim[1], "k")
+
     for signal, signal_style in zip(signals, signal_styles):
         plt.plot(signal, **signal_style)
-        plt.xlabel("time")
-        samples_count = signal.shape[0]
-        xlim = [0, samples_count]
-        plt.xlim(xlim)
+
+    plt.xlabel("time")
     plt.xticks([])
     plt.yticks(yticks)
     plt.ylabel("amplitude")
 
     ax = plt.gca()
-    xlim = ax.get_xlim()
-    plt.hlines(0, xlim[0], xlim[1], "k")
-
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.spines["bottom"].set_visible(False)
 
-    save_signal(output_path)
-    plt.close()
+    if output_path is not None:
+        save_signal(output_path)
+        plt.close()
 
 
 def plot_spectrum_and_save(
