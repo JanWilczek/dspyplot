@@ -822,8 +822,8 @@ def plot_digital_magnitude_responses_in_octaves_and_save(
     b_array,
     a_array,
     sampling_rate,
-    output_path,
-    legend,
+    output_path=None,
+    legend=None,
     ylim=None,
     yticks=None,
     yticklabels=None,
@@ -868,7 +868,9 @@ def plot_digital_magnitude_responses_in_octaves_and_save(
         plt.xlim(xlim)
     plt.yticks(yticks, yticklabels)
     plt.ylabel(ylabel)
-    plt.legend(legend)
+    plt.legend(
+        legend if legend is not None else [], bbox_to_anchor=(1.05, 1), loc="upper left"
+    )
     ax = plt.gca()
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
@@ -876,8 +878,10 @@ def plot_digital_magnitude_responses_in_octaves_and_save(
     suffix = "_magnitude_response"
     if db:
         suffix += "_db"
-    save(output_path, suffix)
-    plt.close()
+
+    if output_path is not None:
+        save(output_path, suffix)
+        plt.close()
 
 
 def plot_digital_magnitude_responses(b_array, a_array, legend, ylim=None):
