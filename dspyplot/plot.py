@@ -312,7 +312,10 @@ def plot_signals_and_save(
 ):
 
     if signal_styles is None:
-        signal_styles = [dict(color=style.color, linestyle="-") for _ in signals]
+        signal_styles = [
+            dict(color=color, linestyle="-")
+            for _, color in zip(signals, itertools.cycle(style.color_palette))
+        ]
 
     if yticks is None:
         yticks = [-1, 0, 1]
