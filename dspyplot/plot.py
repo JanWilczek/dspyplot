@@ -308,7 +308,11 @@ def plot_signal_and_save(
 
 
 def plot_signals_and_save(
-    signals: list, output_path: Path | None, signal_styles=None, yticks=None
+    signals: list,
+    output_path: Path | None,
+    signal_styles=None,
+    yticks=None,
+    legend=None,
 ):
 
     if signal_styles is None:
@@ -321,10 +325,6 @@ def plot_signals_and_save(
         yticks = [-1, 0, 1]
 
     plt.figure(figsize=(12, 6))
-    samples_count = signals[0].shape[0]
-    xlim = [0, samples_count]
-    plt.xlim(xlim)
-    plt.hlines(0, xlim[0], xlim[1], "k")
 
     for signal, signal_style in zip(signals, signal_styles):
         plt.plot(signal, **signal_style)
@@ -334,10 +334,18 @@ def plot_signals_and_save(
     plt.yticks(yticks)
     plt.ylabel("amplitude")
 
+    samples_count = signals[0].shape[0]
+    xlim = [0, samples_count]
+    plt.xlim(xlim)
+    plt.hlines(0, xlim[0], xlim[1], "k", zorder=-1)
+
     ax = plt.gca()
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.spines["bottom"].set_visible(False)
+
+    if legend:
+        plt.legend(legend)
 
     if output_path is not None:
         save_signal(output_path)
