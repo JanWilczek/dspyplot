@@ -452,7 +452,7 @@ def plot_windowed_signal_and_save(signal, window, output_path: Path):
     plt.close()
 
 
-def plot_window_and_save(window, sampling_rate, output_path):
+def plot_window_and_save(window, sampling_rate, output_path, xlabel="time"):
     samples_count = window.shape[0]
     length_seconds = samples_count / sampling_rate
     time = np.linspace(0, length_seconds, samples_count)
@@ -464,7 +464,7 @@ def plot_window_and_save(window, sampling_rate, output_path):
     time_margin = 0.0
     xlim = [time[0] - time_margin, time[-1] + time_margin]
     plt.xlim(xlim)
-    plt.xlabel("time")
+    plt.xlabel(xlabel)
     plt.ylabel("amplitude")
     plt.hlines(0, xlim[0], xlim[1], colors="k")
     ax = plt.gca()
