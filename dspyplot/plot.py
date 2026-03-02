@@ -61,7 +61,10 @@ def prepare_output_path(path, stem_suffix: str):
     return path.with_stem(path.stem + stem_suffix)
 
 
-def save(output_path, suffix=""):
+def save(output_path: Path | None, suffix=""):
+    if output_path is None:
+        return
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(prepare_output_path(output_path, suffix), **style.save_params)
 
