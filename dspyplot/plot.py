@@ -923,7 +923,7 @@ def plot_digital_magnitude_responses(b_array, a_array, legend, ylim=None):
 def plot_digital_magnitude_responses_and_save(
     b_array, a_array, output_path, legend, ylim=None
 ):
-    plot_digital_magnitude_responses_and_save(b_array, a_array, legend, ylim)
+    plot_digital_magnitude_responses(b_array, a_array, legend, ylim)
     save(output_path, "_magnitude_response")
     plt.close()
 
