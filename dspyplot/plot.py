@@ -163,13 +163,15 @@ def stem_signal(
         plt.yticks(yticks)
         ylim_multiplier = 1.1
         plt.ylim([ylim_multiplier * yticks[0], ylim_multiplier * yticks[-1]])
+
     if not show_xticks:
         plt.xticks([])
-    if xticks is not None:
-        plt.xticks(xticks, xtick_labels)
-    if xticks is None and bin_indices is None:
-        xticks = np.arange(signal_to_stem.shape[0])
-        plt.xticks(xticks)
+    else:
+        if xticks is not None:
+            plt.xticks(xticks, xtick_labels)
+        if xticks is None and bin_indices is None:
+            xticks = np.arange(signal_to_stem.shape[0])
+            plt.xticks(xticks)
     plt.xlabel("sample index $n$")
     plt.ylabel("amplitude")
     ax = plt.gca()
