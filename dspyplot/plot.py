@@ -417,12 +417,15 @@ def plot_spectrum_db_and_save(magnitude_spectrum, output_path: Path, frequencies
 
 
 def plot_spectrum_db_in_octaves_and_save(
-    magnitude_spectrum, output_path: Path, frequencies
+    magnitude_spectrum, output_path: Path | None, frequencies, ylim=None
 ):
     plt.figure(figsize=(12, 6))
     min_x = 29
     plt.semilogx(frequencies, magnitude_spectrum, style.color)
-    plt.ylim([-60, 0])
+    if ylim is not None:
+        plt.ylim(ylim)
+    else:
+        plt.ylim([-60, 0])
     xticks, xtick_labels = frequency_ticks()
     plt.xticks(xticks, xtick_labels)
     plt.xlim([min_x, frequencies[-1]])
@@ -433,8 +436,9 @@ def plot_spectrum_db_in_octaves_and_save(
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
 
-    save_spectrum(output_path)
-    plt.close()
+    if output_path is not None:
+        save_spectrum(output_path)
+        plt.close()
 
 
 def plot_windowed_signal_and_save(signal, window, output_path: Path):
