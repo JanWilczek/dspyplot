@@ -3,11 +3,23 @@ from .signals import amplitude2db
 
 
 def dft(signal):
+    """
+    Compute the unnormalized right-side DFT of the input (only the positive frequencies).
+
+    From the docs: "n input points produce n/2+1 complex output points."
+    """
     return np.fft.rfft(signal)
 
 
 def idft(spectrum):
-    return np.fft.ifft(spectrum)
+    """
+    Compute the inverse right-side DFT normalized by the length of the DFT.
+
+    From the docs: "for an output of n points uses n/2+1 input points(...)
+    If n is not given, it is taken to be 2*(m-1) where m is the length of the input
+    along the axis specified by axis."
+    """
+    return np.fft.irfft(spectrum)
 
 
 def magnitude_spectrum(signal):
