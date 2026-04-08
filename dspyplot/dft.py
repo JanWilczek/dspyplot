@@ -45,6 +45,7 @@ def magnitude_spectrum_db(signal):
 
 
 def dft_frequencies(spectrum_length, sampling_rate):
+    """Compute the frequencies corresponding to the right-sided DFT."""
     return np.fft.rfftfreq(2 * spectrum_length - 1, 1 / sampling_rate)
 
 
