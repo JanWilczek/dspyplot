@@ -17,6 +17,16 @@ To use this library in your project (best in your virtual environment), run
 pip install git+https://github.com/JanWilczek/dspyplot.git#egg=dspyplot
 ```
 
+## Tests
+
+To run tests, you need to set up the virtual environment first.
+
+```bash
+python -m venv venv
+source venv/bin/activate # macOS, Linux
+python -m unittest -v
+```
+
 ## 🎈 Contributing
 
 No PRs will be reviewed or merged. If you want to extend/correct the library, fork it.
