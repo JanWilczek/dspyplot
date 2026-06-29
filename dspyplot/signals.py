@@ -247,6 +247,14 @@ def amplitude2db(amplitude):
     return 20 * np.log10(np.maximum(amplitude, 1e-6))
 
 
+def energy2db(energy):
+    return 10 * np.log10(np.maximum(energy, 1e-12))
+
+
+def db2energy(db):
+    return 10 ** (db / 10)
+
+
 class UniversalCombFilter:
     def __init__(
         self,
