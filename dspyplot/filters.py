@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.signal as sig
 
 
 def butter(cutoff_frequency_hz, sampling_rate, q, normalized=False):
@@ -28,3 +29,21 @@ def butter(cutoff_frequency_hz, sampling_rate, q, normalized=False):
         a /= a0
 
     return b, a
+
+
+def pink_noise_filter(sample_rate):
+    start = 20
+    frequencies = np.concatenate(
+        (
+            np.array([0]),
+            start * np.power(2, np.arange(0, np.log2(sample_rate / (2 * start)))),
+            np.array([sample_rate / 2]),
+        ),
+    )
+    # gain is sqrt(power)
+    gain = np.concatenate(
+        (np.array([1]), np.sqrt(start) / np.sqrt(frequencies[1:-1]), np.array([0]))
+    )
+    normalized_frequency = frequencies / (sample_rate / 2)
+    h = sig.firwin2(numtaps=2000, freq=normalized_frequency, gain=gain)
+    return h

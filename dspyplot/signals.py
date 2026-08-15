@@ -2,6 +2,7 @@ import scipy.signal as sig
 import numpy as np
 import pyloudnorm as pyln
 
+from dspyplot.filters import pink_noise_filter
 
 OCTAVE_BANDS = np.asarray([63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000])
 OCTAVE_BANDS_LABELS = [str(f) for f in OCTAVE_BANDS]
@@ -161,6 +162,20 @@ def nonaliasing_sawtooth_ramp_up(frequency_hz, time, harmonics_count=26):
 def generate_noise(length_samples, fade_length=0):
     return apply_fade(
         np.random.default_rng(seed=1).uniform(-1, 1, length_samples), fade_length
+    )
+
+
+def generate_pink_noise(length_samples, sample_rate, fade_length=0):
+    """Pink noise filter has power P = 1 / frequency [Tarr, Hack Audio]"""
+    # [0, 20, 40, 80, ..., Nyquist frequency]
+
+    return apply_fade(
+        np.convolve(
+            generate_noise(length_samples, fade_length=0),
+            pink_noise_filter(sample_rate),
+            "full",
+        ),
+        fade_length,
     )
 
 
